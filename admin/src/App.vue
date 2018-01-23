@@ -1,8 +1,33 @@
 <template>
-  <div id="app">
-    <img src="./assets/logo.png">
-    <router-view/>
-  </div>
+    <div id="app">
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+            <router-link class="navbar-brand" to="/statistics">BlackJack Game Admin</router-link>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsMenu" aria-controls="navbarsMenu" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarsMenu">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <router-link class="nav-link" to="/statistics">Statistics <span class="sr-only">(current)</span></router-link>
+                    </li>
+                    <li class="nav-item">
+                        <router-link class="nav-link" to="/users">Users</router-link>
+                    </li>
+                    <li class="nav-item">
+                        <router-link class="nav-link" to="/decks">Decks</router-link>
+                    </li>
+                    <li class="nav-item">
+                        <router-link class="nav-link" to="/configs">Platform Configs.</router-link>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <main role="main" class="container">
+            <router-view/>
+        </main><!-- /.container -->
+    </div>
 </template>
 
 <script>
@@ -13,11 +38,11 @@ export default {
 
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+    margin-top: 60px;
 }
 </style>
