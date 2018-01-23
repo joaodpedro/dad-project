@@ -1,0 +1,45 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "Black Jack card game server",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joaodpedro/dad-project.git"
+  },
+  "keywords": [
+    "black-jack",
+    "card",
+    "game"
+  ],
+  "author": "Bruno Neves, João Pedro",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/joaodpedro/dad-project/issues"
+  },
+  "homepage": "https://github.com/joaodpedro/dad-project#readme",
+  "devDependencies": {
+    "faker": "^4.1.0",
+    "knex": "^0.14.2"
+  },
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.18.2",
+    "cookie-parser": "^1.4.3",
+    "cors": "^2.8.4",
+    "dotenv": "^4.0.0",
+    "express": "^4.16.2",
+    "express-session": "^1.15.6",
+    "helmet": "^3.9.0",
+    "morgan": "^1.9.0",
+    "mysql2": "^1.5.1",
+    "nodemailer": "^4.4.1",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "socket.io": "^2.0.4"
+  }
+}
