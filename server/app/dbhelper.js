@@ -14,36 +14,33 @@ class DbHelper{
     /*================================================================================
       ======================================USERS=====================================
       ================================================================================*/
-    getUsers(callback){
-        connection.execute('SELECT * FROM `users` WHERE admin = 0', function(err, results, fields) {
-            if(err){ console.log(err); }
-            
+      getUsers(callback){
+        connection.execute('SELECT id, name, email, nickname, admin, blocked, reason_blocked, reason_reactivated, total_points, total_games_played, created_at, updated_at FROM `users` WHERE admin = 0', 
+          function(err, results, fields) {
             callback(err, results);
         });
     }
 
     getUserById(id, callback){
-        connection.execute('SELECT * FROM `users` WHERE id = ?', [id], function(err, results, fields) {
-            if(err){ console.log(err); }
-            
+        connection.execute('SELECT id, name, email, nickname, admin, blocked, reason_blocked, reason_reactivated, total_points, total_games_played, created_at, updated_at FROM `users` WHERE id = ?', 
+          [id], 
+          function(err, results, fields) {
             callback(err, results);
         });
     }
 
     getUserByUsername(username, callback){
-        connection.execute('SELECT * FROM `users` WHERE nickname = ? OR email = ?', [username, username], function(err, results, fields) {
-            if(err){ console.log(err); }
-            
+        connection.execute('SELECT * FROM `users` WHERE nickname = ? OR email = ?', 
+          [username, username], 
+          function(err, results, fields) {
             callback(err, results[0]);
         });
     }
 
     createUser(user, callback){
         connection.execute('INSERT INTO `users`(name, email, password, nickname) VALUES(?, ?, ?, ?)', 
-        [user.name, user.email, bcrypt.hashSync(user.password, bcrypt.genSaltSync(8)), user.nickname], 
-        function(err, results, fields){
-            if(err){ console.log(err); }
-
+          [user.name, user.email, bcrypt.hashSync(user.password, bcrypt.genSaltSync(8)), user.nickname], 
+          function(err, results, fields){
             callback(err, results);
         });
     }

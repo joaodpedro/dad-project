@@ -41,8 +41,10 @@ app.use('/static', express.static(path.join(__dirname, 'public')));
 // routes ======================================================================
 var test = require('./app/routes/test')(express.Router(), passport, db)
 var auth = require('./app/routes/auth')(express.Router(), passport, db)
+var users = require('./app/routes/users')(express.Router(), passport, db)
 app.use(process.env.API_SUFFIX + '/test', test);
 app.use(process.env.API_SUFFIX + '/', auth);
+app.use(process.env.API_SUFFIX + '/users', users);
 
 // launch ======================================================================
 server.listen(port, function(){

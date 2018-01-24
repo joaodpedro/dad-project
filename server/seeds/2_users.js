@@ -2,14 +2,16 @@
 var faker = require('../node_modules/faker/locale/en') //faker using only en
 var bcrypt = require('bcrypt-nodejs');
 
-let createRecord = function(knex){
+let createRecord = function(knex, index){
     var firstName = faker.name.firstName();
     var lastName = faker.name.lastName();
+    var pass = index===1 ? 'secret' : 'password_dad';
     return knex('users').insert({
-        name:  firstName +" "+ lastName,
-        email: faker.internet.email(firstName, lastName, 'gmail.com'),
-        password: bcrypt.hashSync('password_dad', bcrypt.genSaltSync(8)),
-        nickname: faker.internet.userName(firstName, lastName),
+        name:  index===1 ? 'Administrator' : firstName +" "+ lastName,
+        email: index===1 ? 'admin@mail.dad' : 'user'+index+'@gmail.com',
+        password: bcrypt.hashSync(pass, bcrypt.genSaltSync(8)),
+        nickname: index===1 ? 'admin' : 'user'+index,
+        admin: index===1 ? true : false,
         blocked: false
     });
 }
@@ -21,16 +23,8 @@ exports.seed = function(knex, Promise) {
             // Inserts seed entries
             let records = [];
 
-            records.push(knex('users').insert({
-                name: 'Administrator',
-                email: 'admin@mail.dad',
-                password: bcrypt.hashSync('secret', bcrypt.genSaltSync(8)),
-                nickname: 'admin',
-                admin: true,
-                blocked: false
-            }));
-            for(let i=1; i < 6; i++){
-                records.push(createRecord(knex));
+            for(let i=1; i < 7; i++){
+                records.push(createRecord(knex, i));
             }
 	  
             return Promise.all(records);

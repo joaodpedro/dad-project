@@ -1,14 +1,16 @@
+var helper = require('../route-security-helper');
+
 module.exports = function(router, passport, db){
     router.post('/login', passport.authenticate('local'), function(req, res){
-        return res.json(req.user);
+        return helper.handleResponse(res, null, req.user);
     });
 
     router.post('/register', function(req, res){
-        db.createUser(req.body, function(err, results){
-            if(err){ return res.status(500).json({message: 'Oops! An unexpected error occurred'}); }
-            
-            console.log(results);
-            return res.json({rows: results.affectedRows, id: results.insertId});
+        db.createUser(req.body, function(err, result){
+            var data = {
+                rows: result ? result.affectedRows : 0, 
+                id: result ? result.insertId : -1 };
+            return helper.handleResponse(res, err, data);
         });
     });
 
