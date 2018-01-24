@@ -24,7 +24,7 @@ export default {
   },
   methods: {
       sendMsg(){
-          this.$socket.emit('msg', 'Mensagem!!');
+          this.$socket.emit('msg', 'Refresh!!');
       }
   }
 }

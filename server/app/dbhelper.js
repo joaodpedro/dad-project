@@ -49,6 +49,39 @@ class DbHelper{
     /*================================================================================
       ======================================GAMES=====================================
       ================================================================================*/
+      getLobbyGames(callback){
+        connection.execute('SELECT games.id, dad_project.users.nickname, date_format(games.created_at,"%d/%m/%Y %H:%i:%s") as created_at , games.total_players FROM dad_project.games LEFT JOIN dad_project.users ON dad_project.games.created_by = dad_project.users.id WHERE games.status = "Pending"', 
+          function(err, results, fields) {
+            callback(err, results);
+        });
+    }
+
+    createGame(game, callback){
+        connection.execute('INSERT INTO dad_project.games(created_by,deck_used) VALUES(?,?);', 
+          [game.createdBy, game.deckUse], 
+          function(err, results, fields){
+            callback(err, results);
+        });
+    }
+
+
+    joinGame(game, callback){
+        connection.execute('INSERT INTO dad_project.game_user(game_id,user_id) VALUES(?,?); UPDATE dad_project.games SET total_players = ? WHERE id = ?;', 
+          [game.game.id, game.user , game.game.total_players, game.game.id], 
+          function(err, results, fields){
+            callback(err, results);
+        });
+    }
+    
+    updateTotalPlayer(game, callback){
+        connection.execute('UPDATE dad_project.games SET total_players = ? WHERE id = ?;', 
+          [game.total_players, game.id], 
+          function(err, results, fields){
+            callback(err, results);
+        });
+    }
+
+
 }
 
 module.exports = DbHelper;

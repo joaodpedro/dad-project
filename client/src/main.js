@@ -12,6 +12,7 @@ Vue.use(VueSocketio, 'http://localhost:8080');
 new Vue({
   el: '#app',
   router,
+  data: {loggedUser:null},
   components: { App },
   template: '<App/>'
 })
