@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top" v-if="loggedIn">
             <router-link class="navbar-brand" to="/statistics">BlackJack Game Admin</router-link>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsMenu" aria-controls="navbarsMenu" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -21,6 +21,11 @@
                         <router-link class="nav-link" to="/configs">Platform Configs.</router-link>
                     </li>
                 </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <router-link class="btn btn-primary" to="/logout">Logout</router-link>
+                    </li>
+                </ul>
             </div>
         </nav>
 
@@ -31,8 +36,22 @@
 </template>
 
 <script>
+import auth from '@/auth';
+
 export default {
-  name: 'App'
+  name: 'App',
+  data () {
+    return {
+      loggedIn: auth.loggedIn(),
+      user: this.$root.$data['loggedUser']
+    }
+  },
+  created () {
+    auth.onChange = loggedIn => {
+      this.loggedIn = loggedIn
+      this.$root.$data['loggedUser'] = auth.getLoggedUser();
+    }
+  }
 }
 </script>
 
