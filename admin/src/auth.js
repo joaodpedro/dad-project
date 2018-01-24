@@ -13,7 +13,7 @@ export default {
       
         doRequest(nickname, pass, (response) => {
             if (response.authenticated) {
-                localStorage.user = response.user;
+                localStorage.user = JSON.stringify(response.user);
                 if (cb) cb(true);
                 this.onChange(true);
             } else {
@@ -24,7 +24,7 @@ export default {
     },
   
     getLoggedUser () {
-        return localStorage.user;
+        return JSON.parse(localStorage.user);
     },
   
     logout (cb) {

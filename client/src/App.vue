@@ -47,6 +47,7 @@
 
 <script>
 import auth from '@/utils/auth'
+
 export default {
   name: 'App',
   data () {
@@ -57,7 +58,6 @@ export default {
   created () {
     auth.onChange = loggedIn => {
       this.loggedIn = loggedIn;
-      
     }
   }
 }

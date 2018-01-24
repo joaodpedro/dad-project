@@ -6,10 +6,6 @@
         <form class="form-signin" @submit.prevent="login()">
             <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
             
-            <div v-if="$route.query.redirect" class="alert alert-info" role="alert">
-                You need to login!
-            </div>
-            
             <div v-if="errorMessage" class="alert alert-danger" role="alert">
                 {{ errorMessage }}
             </div>
@@ -54,11 +50,9 @@ export default {
     methods: {
         login(){
             auth.login(this.user.username, this.user.password, loggedIn => {
-                
                 if (!loggedIn) {
                     this.errorMessage = 'Wrong credentials!';
                 } else {
-                    console.log(auth.getLoggedUser());
                     this.$root.$data['loggedUser'] = auth.getLoggedUser();
                     this.$router.replace(this.$route.query.redirect || '/statistics')
                 }

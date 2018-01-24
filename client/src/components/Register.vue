@@ -1,20 +1,19 @@
 <template>
     <div class="Register">
         <img src="http://localhost:8080/static/img/logo.png"><br/>
-        
 
         <form @submit.prevent="register()" >
             <h1 class="h3 mb-3 font-weight-normal">Register</h1>
             <div v-if="errorMessage" class="alert alert-danger" role="alert">
                 {{ errorMessage }}
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
+                    <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div v-if="successMessage" class="alert alert-success" role="alert">
                 {{ successMessage }}
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
+                    <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             
@@ -66,7 +65,7 @@ export default {
     methods: {
         register(){
             axios.post('http://localhost:8080/api/register', this.user).then(respose=> {
-                this.successMessage='User Successfully Registered'
+                this.successMessage='User successfully registered'
                 this.errorMessage='';
             }).catch(err=>{
                  this.successMessage='';

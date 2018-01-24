@@ -43,6 +43,7 @@ export default new Router({
         },
         {
             path: '/logout',
+            name: 'logout',
             beforeEnter (to, from, next) {
                 auth.logout()
                 next('/')

@@ -13,7 +13,21 @@ module.exports = function(passport, db){
                 if (err) { return done(err); }
                 if (!user) { return done(null, false); }
                 if (!bcrypt.compareSync(password, user.password)) { return done(null, false); }
-                return done(null, user);
+                var userWithoutPass = {
+                    id: user.id,
+                    name: user.name,
+                    email: user.email,
+                    nickname: user.nickname,
+                    admin: user.admin,
+                    blocked: user.blocked,
+                    reason_blocked: user.reason_blocked,
+                    reason_reactivated: user.reason_reactivated,
+                    total_points: user.total_points,
+                    total_games_played: user.total_games_played,
+                    created_at: user.created_at,
+                    updated_at: user.updated_at
+                };
+                return done(null, userWithoutPass);
             });
         }
     ));

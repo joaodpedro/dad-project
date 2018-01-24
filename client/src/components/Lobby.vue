@@ -1,19 +1,23 @@
 <template>
-  <div class="loby">
+    <div class="loby">
+        <div v-if="errorMessage" class="alert alert-danger" role="alert">
+            {{ errorMessage }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        
+        <div v-if="successMessage" class="alert alert-success" role="alert">
+            {{ successMessage }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
 
-      <div v-if="errorMessage" class="alert alert-danger" role="alert">
-                {{ errorMessage }}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div v-if="successMessage" class="alert alert-success" role="alert">
-                {{ successMessage }}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        <button class="btn btn-primary btn-sm" @click="createGame()">Create Game</button> 
+        <div class="row">
+            <button class="btn btn-primary btn-sm" @click="createGame()">Create Game</button>
+        </div>
+
         <table class="table table-hover table-striped">
             <thead class="thead-dark">
                 <tr>
@@ -25,7 +29,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="game in games" :key="game.id">
+                <tr v-for="game in lobbyGames" :key="game.id">
                     <th scope="row">{{ game.id }}</th>
                     <td>{{ game.nickname }}</td>
                     <td>{{ game.created_at }}</td>
@@ -36,7 +40,7 @@
                 </tr>
             </tbody>
         </table>
-  </div>
+    </div>
 </template>
 
 <script>
@@ -46,7 +50,7 @@ export default {
     name: 'Lobby',
     data () {
         return {
-            games: [],
+            lobbyGames: [],
             errorMessage: '',
             successMessage: ''
         }
@@ -57,20 +61,20 @@ export default {
     methods: {
         loadGames(){
             axios.get('http://localhost:8080/api/games').then((response) => {
-                this.games = response.data;
+                this.lobbyGames = response.data;
             })
             .catch((err) => {
                 console.log(err);
             });
         },
         createGame(){
-            axios.post('http://localhost:8080/api/games',{createdBy:this.$root.$data['loggedUser'].id,deckUse:1}).then((response) => {
+            axios.post('http://localhost:8080/api/games', {createdBy: this.$root.$data['loggedUser'].id , deckUse: 1})
+            .then((response) => {
                 this.successMessage='Game Successfully Created'
                 this.errorMessage='';
-                
+    
                 //Enviar MEnsagem ao socket
-                this.$socket.emit('LobbyRF');
-                
+                this.$socket.emit('LobbyRF');            
             })
             .catch((err) => {
                 this.successMessage='';
@@ -80,7 +84,8 @@ export default {
         },
         joinGame(game){
             game.total_players++;
-            axios.post('http://localhost:8080/api/games/joinGame',{game:game,user:this.$root.$data['loggedUser'].id}).then((response) => {
+            axios.post('http://localhost:8080/api/games/joinGame', {game: game, user: this.$root.$data['loggedUser'].id})
+            .then((response) => {
                 this.successMessage='Join Successfully'
                 this.errorMessage=''; 
             })
@@ -92,16 +97,12 @@ export default {
         }
     },
     sockets: {
-      lobbyChange(){
-          this.loadGames();
-      }
+        lobbyChange(){
+            this.loadGames();
+        }
     }
 }
 </script>
 
-
-
-
 <style>
-
 </style>

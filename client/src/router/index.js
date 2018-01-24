@@ -14,38 +14,38 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Statistic',
+      name: 'statistic',
       component: Statistic
     },
     {
+        path: '/lobby',
+        name: 'lobby',
+        component: Lobby
+    },
+    {
       path: '/testme',
-      name: 'Testme',
+      name: 'testme',
       component: Testme,
       beforeEnter: requireAuth
     },
     {
-      path: '/logout',
-      beforeEnter (to, from, next) {
-          auth.logout()
-          next('/')
-      }
-  },
-  {
-    path: '/login',
-    name: 'Login',
-    component: Login
-  },
-  {
-    path: '/register',
-    name: 'Register',
-    component: Register
-  }
-  ,
-  {
-    path: '/lobby',
-    name: 'Lobby',
-    component: Lobby
-  }
+        path: '/login',
+        name: 'login',
+        component: Login
+    },
+    {
+        path: '/register',
+        name: 'register',
+        component: Register
+    },
+    {
+        path: '/logout',
+        name: 'logout',
+        beforeEnter (to, from, next) {
+            auth.logout()
+            next('/')
+        }
+    }
   ]
 })
 

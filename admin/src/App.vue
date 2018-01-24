@@ -42,8 +42,7 @@ export default {
   name: 'App',
   data () {
     return {
-      loggedIn: auth.loggedIn(),
-      user: this.$root.$data['loggedUser']
+      loggedIn: auth.loggedIn()
     }
   },
   created () {

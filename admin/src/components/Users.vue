@@ -10,20 +10,20 @@
                     <th scope="col">Email</th>
                     <th scope="col">Nickname</th>
                     <th scope="col">Blocked?</th>
-                    <th scope="col">Actions</th>
+                    <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="user in users" :key="user.id">
                     <th scope="row">{{ user.id }}</th>
-                    <td>{{ user.name }}</td>
+                    <td><router-link>{{ user.name }}</router-link></td>
                     <td>{{ user.email }}</td>
                     <td>{{ user.nickname }}</td>
                     <td>{{ user.blocked ? 'Yes' : 'No' }}</td>
                     <td>
-                        <button class="btn btn-primary btn-sm">Action 1</button>
-                        <button class="btn btn-success btn-sm">Action 2</button>
-                        <button class="btn btn-danger btn-sm">Action 3</button>
+                        <button class="btn btn-warning btn-sm" v-if="!user.blocked">Block</button>
+                        <button class="btn btn-success btn-sm" v-if="user.blocked">Reactivate</button>
+                        <button class="btn btn-danger btn-sm">Remove</button>
                     </td>
                 </tr>
             </tbody>

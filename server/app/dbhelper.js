@@ -15,14 +15,14 @@ class DbHelper{
       ======================================USERS=====================================
       ================================================================================*/
       getUsers(callback){
-        connection.execute('SELECT id, name, email, nickname, admin, blocked, reason_blocked, reason_reactivated, total_points, total_games_played, created_at, updated_at FROM `users` WHERE admin = 0', 
+        connection.execute('SELECT id, name, email, nickname, admin, blocked, reason_blocked, reason_reactivated, total_points, total_games_played, created_at, updated_at FROM `users` WHERE admin = 0;', 
           function(err, results, fields) {
             callback(err, results);
         });
     }
 
     getUserById(id, callback){
-        connection.execute('SELECT id, name, email, nickname, admin, blocked, reason_blocked, reason_reactivated, total_points, total_games_played, created_at, updated_at FROM `users` WHERE id = ?', 
+        connection.execute('SELECT id, name, email, nickname, admin, blocked, reason_blocked, reason_reactivated, total_points, total_games_played, created_at, updated_at FROM `users` WHERE id = ?;', 
           [id], 
           function(err, results, fields) {
             callback(err, results);
@@ -30,7 +30,7 @@ class DbHelper{
     }
 
     getUserByUsername(username, callback){
-        connection.execute('SELECT * FROM `users` WHERE nickname = ? OR email = ?', 
+        connection.execute('SELECT * FROM `users` WHERE (nickname = ? OR email = ?) AND blocked = 0;', 
           [username, username], 
           function(err, results, fields) {
             callback(err, results[0]);
@@ -38,7 +38,7 @@ class DbHelper{
     }
 
     createUser(user, callback){
-        connection.execute('INSERT INTO `users`(name, email, password, nickname) VALUES(?, ?, ?, ?)', 
+        connection.execute('INSERT INTO `users`(name, email, password, nickname) VALUES(?, ?, ?, ?);', 
           [user.name, user.email, bcrypt.hashSync(user.password, bcrypt.genSaltSync(8)), user.nickname], 
           function(err, results, fields){
             callback(err, results);
@@ -57,7 +57,7 @@ class DbHelper{
     }
 
     createGame(game, callback){
-        connection.execute('INSERT INTO dad_project.games(created_by,deck_used) VALUES(?,?);', 
+        connection.execute('INSERT INTO dad_project.games(created_by, deck_used) VALUES(?, ?);', 
           [game.createdBy, game.deckUse], 
           function(err, results, fields){
             callback(err, results);
@@ -66,7 +66,7 @@ class DbHelper{
 
 
     joinGame(game, callback){
-        connection.execute('INSERT INTO dad_project.game_user(game_id,user_id) VALUES(?,?); UPDATE dad_project.games SET total_players = ? WHERE id = ?;', 
+        connection.execute('INSERT INTO dad_project.game_user(game_id, user_id) VALUES(?, ?);', 
           [game.game.id, game.user , game.game.total_players, game.game.id], 
           function(err, results, fields){
             callback(err, results);
@@ -80,8 +80,6 @@ class DbHelper{
             callback(err, results);
         });
     }
-
-
 }
 
 module.exports = DbHelper;
