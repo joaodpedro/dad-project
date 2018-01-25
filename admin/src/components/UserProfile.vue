@@ -9,95 +9,85 @@
             </button>
         </div>
 
-        <div class="row">
-            <div class="col-xs-12 float-right">
-                <button v-if="!user.blocked" class="btn btn-warning btn-md" data-toggle="modal" data-target="#modalBlock">
+        <div class="row justify-content-end" v-if="user">
+            <div class="col-md-3 order-md-2 mb-4">
+                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-muted">Admin actions</span>
+                </h4>
+                <button v-if="!user.blocked" class="btn btn-warning btn-block btn-md" data-toggle="modal" data-target="#modalBlock">
                     Block
                 </button>
-                &nbsp;<button v-if="user.blocked" class="btn btn-success btn-md" data-toggle="modal" data-target="#modalReactivate">
+                <button v-if="user.blocked" class="btn btn-success btn-block btn-md" data-toggle="modal" data-target="#modalReactivate">
                     Reactivate
-                </button>&nbsp;
-                <button class="btn btn-danger btn-md" data-toggle="modal" data-target="#modalRemove">
+                </button>
+                <button class="btn btn-danger btn-block btn-md" data-toggle="modal" data-target="#modalRemove">
                     Remove
                 </button>
             </div>
-        
 
-        <form class="col-xs-6">
-            <div class="form-group row">
-                <label for="inputId" class="col-sm-3 col-form-label">ID#:</label>
-                <div class="col-sm-9">
-                    <input type="number" readonly class="form-control" id="inputId" v-model="user.id">
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="inputName" class="col-sm-3 col-form-label">Name:</label>
-                <div class="col-sm-9">
-                    <input type="text" readonly class="form-control" id="inputName" v-model="user.name">
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="inputEmail" class="col-sm-2 col-form-label">Email:</label>
-                <div class="col-sm-10">
-                    <input type="email" readonly class="form-control" id="inputEmail" v-model="user.email">
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="inputUsername" class="col-sm-2 col-form-label">Username:</label>
-                <div class="col-sm-10">
-                    <input type="text" readonly class="form-control" id="inputUsername" v-model="user.nickname">
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="inputBlocked" class="col-sm-2 col-form-label">Blocked:</label>
-                <div class="col-sm-10">
-                    <input type="text" readonly class="form-control" id="inputBlocked" v-text="user.blocked ? 'Yes' : 'No'">
-                </div>
-            </div>
-            <div class="form-group row" v-if="user.blocked">
-                <label for="inputReasonBlocked" class="col-sm-2 col-form-label">Reason Blocked:</label>
-                <div class="col-sm-10">
-                    <!--<input type="text" readonly class="form-control" id="inputReasonBlocked" placeholder="{{user.id}}">-->
-                    <textarea readonly class="form-control" id="inputReasonBlocked" v-model="user.reason_blocked"></textarea>
-                </div>
-            </div>
-            <div class="form-group row" v-if="!user.blocked && user.reason_reactivated != ''">
-                <label for="inputReasonReactivated" class="col-sm-2 col-form-label">Reason Reactivated:</label>
-                <div class="col-sm-10">
-                    <!--<input type="email" readonly class="form-control" id="inputReasonReactivated" placeholder="{{user.id}}">-->
-                    <textarea readonly class="form-control" id="inputReasonReactivated" v-model="user.reason_reactivated"></textarea>
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="inputTotalPts" class="col-sm-2 col-form-label">Total Points:</label>
-                <div class="col-sm-10">
-                    <input type="number" readonly class="form-control" id="inputTotalPts" v-model="user.total_points">
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="inputTotalGames" class="col-sm-2 col-form-label">Total Games (played):</label>
-                <div class="col-sm-10">
-                    <input type="number" readonly class="form-control" id="inputTotalGames" v-model="user.total_games_played">
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="inputRegisterDate" class="col-sm-2 col-form-label">Registered at:</label>
-                <div class="col-sm-10">
-                    <input type="text" readonly class="form-control" id="inputRegisterDate" v-model="user.created_at">
-                </div>
-            </div>
-            <!--<div class="form-group row">
-                <div class="col-sm-2">Checkbox</div>
-                <div class="col-sm-10">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="gridCheck1">
-                        <label class="form-check-label" for="gridCheck1">
-                            Example checkbox
-                        </label>
+            <form class="col-md-6  order-md-1">
+                <div class="form-group row">
+                    <label for="inputId" class="col-sm-3 col-form-label"><b>ID#:</b></label>
+                    <div class="col-sm-8">
+                        <input type="number" readonly class="form-control" id="inputId" v-model="user.id">
                     </div>
                 </div>
-            </div>-->
-        </form>
+                <div class="form-group row">
+                    <label for="inputName" class="col-sm-3 col-form-label"><b>Name:</b></label>
+                    <div class="col-sm-8">
+                        <input type="text" readonly class="form-control" id="inputName" v-model="user.name">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="inputEmail" class="col-sm-3 col-form-label"><b>Email:</b></label>
+                    <div class="col-sm-8">
+                        <input type="email" readonly class="form-control" id="inputEmail" v-model="user.email">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="inputUsername" class="col-sm-3 col-form-label"><b>Username:</b></label>
+                    <div class="col-sm-8">
+                        <input type="text" readonly class="form-control" id="inputUsername" v-model="user.nickname">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="inputBlocked" class="col-sm-3 col-form-label"><b>Blocked:</b></label>
+                    <div class="col-sm-8">
+                        <input type="text" readonly class="form-control" id="inputBlocked" value="Yes" v-if="user.blocked">
+                        <input type="text" readonly class="form-control" id="inputBlocked" value="No" v-else>
+                    </div>
+                </div>
+                <div class="form-group row" v-if="user.blocked">
+                    <label for="inputReasonBlocked" class="col-sm-3 col-form-label"><b>Reason Blocked:</b></label>
+                    <div class="col-sm-8">
+                        <textarea readonly class="form-control" id="inputReasonBlocked" v-model="user.reason_blocked"></textarea>
+                    </div>
+                </div>
+                <div class="form-group row" v-if="!user.blocked && user.reason_reactivated != ''">
+                    <label for="inputReasonReactivated" class="col-sm-3 col-form-label"><b>Reason Reactivated:</b></label>
+                    <div class="col-sm-8">
+                        <textarea readonly class="form-control" id="inputReasonReactivated" v-model="user.reason_reactivated"></textarea>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="inputTotalPts" class="col-sm-3 col-form-label"><b>Total Points:</b></label>
+                    <div class="col-sm-8">
+                        <input type="number" readonly class="form-control" id="inputTotalPts" v-model="user.total_points">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="inputTotalGames" class="col-sm-3 col-form-label"><b>Total Games (played):</b></label>
+                    <div class="col-sm-8">
+                        <input type="number" readonly class="form-control" id="inputTotalGames" v-model="user.total_games_played">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="inputRegisterDate" class="col-sm-3 col-form-label"><b>Registered at:</b></label>
+                    <div class="col-sm-8">
+                        <input type="text" readonly class="form-control" id="inputRegisterDate" v-model="user.created_at">
+                    </div>
+                </div>
+            </form>
         </div>
 
 
@@ -197,8 +187,7 @@ export default {
     methods: {
         loadUser(){
             axios.get('http://localhost:8080/api/users/' + this.$route.params.id).then((response) => {
-                console.log(response);
-                this.user = response.data[0];
+                this.user = response.data;
             })
             .catch((err) => {
                 console.log(err);
@@ -210,6 +199,7 @@ export default {
                 email: this.user.email
             }).then(response => {
                 this.user.blocked = 1;
+                this.user.reason_blocked = this.reasonBlocked;
                 this.alertMessage = 'User ' + this.user.name + ' successfully blocked';
                 this.alertType = 'alert-success';
                 this.clear();
@@ -227,6 +217,7 @@ export default {
                 email: this.user.email
             }).then(response => {
                 this.user.blocked = 0;
+                this.user.reason_reactivated = this.reasonReactivated;
                 this.alertMessage = 'User ' + this.user.name + ' successfully reactivated';
                 this.alertType = 'alert-success';
                 this.clear();
@@ -258,5 +249,8 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.form-control:read-only{
+    background-color: aliceblue;
+}
 </style>

@@ -50,6 +50,12 @@ export default {
       this.loggedIn = loggedIn
       this.$root.$data['loggedUser'] = auth.getLoggedUser();
     }
+    document.addEventListener('beforeunload', this.unloadHandler());
+  },
+  methods: {
+      unloadHandler(){
+          auth.logout();
+      }
   }
 }
 </script>

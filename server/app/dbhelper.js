@@ -25,7 +25,7 @@ class DbHelper{
         connection.execute('SELECT id, name, email, nickname, admin, blocked, reason_blocked, reason_reactivated, total_points, total_games_played, created_at, updated_at FROM `users` WHERE id = ?;', 
           [id], 
           function(err, results, fields) {
-            callback(err, results);
+            callback(err, results[0]);
         });
     }
 
