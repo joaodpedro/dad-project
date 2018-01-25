@@ -43,10 +43,12 @@ var test = require('./app/routes/test')(express.Router(), passport, db)
 var auth = require('./app/routes/auth')(express.Router(), passport, db)
 var users = require('./app/routes/users')(express.Router(), passport, db)
 var games = require('./app/routes/games')(express.Router(), passport, db)
+var confs = require('./app/routes/configs')(express.Router(), passport, db)
 app.use(process.env.API_SUFFIX + '/test', test);
 app.use(process.env.API_SUFFIX + '/', auth);
 app.use(process.env.API_SUFFIX + '/users', users);
 app.use(process.env.API_SUFFIX + '/games', games);
+app.use(process.env.API_SUFFIX + '/configs', confs);
 
 // launch ======================================================================
 server.listen(port, function(){

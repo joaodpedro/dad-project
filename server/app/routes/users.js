@@ -14,6 +14,18 @@ module.exports = function(router, passport, db){
         });
     });
 
+    router.put('/:id/password', /*helper.isLoggedIn,*/ function(req, res){
+        db.updateUserPassword(req.params.id, req.body, function(err, result){
+            return helper.handleResponse(res, err, {rows: result.affectedRows, message:'Password changed'});
+        });
+    });
+
+    router.put('/:id/email', /*helper.isLoggedIn,*/ function(req, res){
+        db.updateUserEmail(req.params.id, req.body.email, function(err, result){
+            return helper.handleResponse(res, err, {rows: result.affectedRows, message:'Email changed'});
+        });
+    });
+
     router.put('/:id/block', /*helper.isAdmin,*/ function(req, res){
         db.getPlatformEmail(function(err, email){
             db.blockUser(req.params.id, req.body.reason_blocked, function(err, result){

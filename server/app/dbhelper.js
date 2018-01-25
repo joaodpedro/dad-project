@@ -45,8 +45,32 @@ class DbHelper{
         });
     }
 
+    updateUserPassword(id, passwords, callback){
+        connection.execute('SELECT password FROM `users` WHERE id = ?;', [id], function(err, results, fields){
+            if(bcrypt.compareSync(passwords.old_pass, results[0].password)){
+                connection.execute('UPDATE `users` SET password = ?, updated_at = NOW() WHERE id = ?;', 
+                [bcrypt.hashSync(passwords.new_pass, bcrypt.genSaltSync(8)), id], 
+                function(err1, results1, fields1){
+                    callback(err1, results1);
+                });   
+            }else{
+                if(!err)
+                    err = {errno:-11, code:'BAD_CREDEN', message:'Credentials don\'t match'};
+                callback(err, results);
+            }
+        });
+    }
+
+    updateUserEmail(id, email, callback){
+        connection.execute('UPDATE `users` SET email = ?, updated_at = NOW() WHERE id = ?;', 
+        [email, id], 
+        function(err, results, fields){
+            callback(err, results);
+        });
+    }
+
     blockUser(id, reason_blocked, callback){
-        connection.execute('UPDATE `users` SET blocked = 1, reason_blocked = ?, reason_reactivated = NULL, updated_at = NOW() WHERE id = ?', 
+        connection.execute('UPDATE `users` SET blocked = 1, reason_blocked = ?, reason_reactivated = NULL, updated_at = NOW() WHERE id = ?;', 
         [reason_blocked, id], 
         function(err, results, fields){
             callback(err, results);
@@ -54,7 +78,7 @@ class DbHelper{
     }
 
     reactivateUser(id, reason_reactivated, callback){
-        connection.execute('UPDATE `users` SET blocked = 0, reason_blocked = NULL, reason_reactivated = ?, updated_at = NOW() WHERE id = ?', 
+        connection.execute('UPDATE `users` SET blocked = 0, reason_blocked = NULL, reason_reactivated = ?, updated_at = NOW() WHERE id = ?;', 
         [reason_reactivated, id], 
         function(err, results, fields){
             callback(err, results);
@@ -74,7 +98,7 @@ class DbHelper{
       ======================================GAMES=====================================
       ================================================================================*/
     getLobbyGames(callback){
-        connection.execute('SELECT games.id, dad_project.users.nickname, date_format(games.created_at,"%d/%m/%Y %H:%i:%s") as created_at , games.total_players FROM dad_project.games LEFT JOIN dad_project.users ON dad_project.games.created_by = dad_project.users.id WHERE games.status = "Pending"', 
+        connection.execute('SELECT games.id, dad_project.users.nickname, date_format(games.created_at,"%d/%m/%Y %H:%i:%s") as created_at , games.total_players FROM dad_project.games LEFT JOIN dad_project.users ON dad_project.games.created_by = dad_project.users.id WHERE games.status = "Pending";', 
           function(err, results, fields) {
             callback(err, results);
         });
@@ -111,6 +135,14 @@ class DbHelper{
       ================================================================================*/
     getPlatformEmail(callback){
         connection.execute('SELECT platform_email FROM `config`;', function(err, results, fields){
+            callback(err, results[0]);
+        });
+    }
+
+    updatePlatformEmail(email, callback){
+        connection.execute('UPDATE `config` SET platform_email = ?, updated_at = NOW();', 
+        [email], 
+        function(err, results, fields){
             callback(err, results);
         });
     }
