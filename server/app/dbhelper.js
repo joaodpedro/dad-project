@@ -14,7 +14,7 @@ class DbHelper{
     /*================================================================================
       ======================================USERS=====================================
       ================================================================================*/
-      getUsers(callback){
+    getUsers(callback){
         connection.execute('SELECT id, name, email, nickname, admin, blocked, reason_blocked, reason_reactivated, total_points, total_games_played, created_at, updated_at FROM `users` WHERE admin = 0;', 
           function(err, results, fields) {
             callback(err, results);
@@ -45,11 +45,35 @@ class DbHelper{
         });
     }
 
+    blockUser(id, reason_blocked, callback){
+        connection.execute('UPDATE `users` SET blocked = 1, reason_blocked = ?, reason_reactivated = NULL, updated_at = NOW() WHERE id = ?', 
+        [reason_blocked, id], 
+        function(err, results, fields){
+            callback(err, results);
+        });
+    }
+
+    reactivateUser(id, reason_reactivated, callback){
+        connection.execute('UPDATE `users` SET blocked = 0, reason_blocked = NULL, reason_reactivated = ?, updated_at = NOW() WHERE id = ?', 
+        [reason_reactivated, id], 
+        function(err, results, fields){
+            callback(err, results);
+        });
+    }
+
+    deleteUser(id, callback){
+        connection.execute('DELETE FROM `users` WHERE id = ?;', 
+        [id], 
+        function(err, results, fields){
+            callback(err, results);
+        });
+    }
+
 
     /*================================================================================
       ======================================GAMES=====================================
       ================================================================================*/
-      getLobbyGames(callback){
+    getLobbyGames(callback){
         connection.execute('SELECT games.id, dad_project.users.nickname, date_format(games.created_at,"%d/%m/%Y %H:%i:%s") as created_at , games.total_players FROM dad_project.games LEFT JOIN dad_project.users ON dad_project.games.created_by = dad_project.users.id WHERE games.status = "Pending"', 
           function(err, results, fields) {
             callback(err, results);
@@ -77,6 +101,16 @@ class DbHelper{
         connection.execute('UPDATE dad_project.games SET total_players = ? WHERE id = ?;', 
           [game.total_players, game.id], 
           function(err, results, fields){
+            callback(err, results);
+        });
+    }
+
+
+    /*================================================================================
+      =====================================CONFIGS====================================
+      ================================================================================*/
+    getPlatformEmail(callback){
+        connection.execute('SELECT platform_email FROM `config`;', function(err, results, fields){
             callback(err, results);
         });
     }

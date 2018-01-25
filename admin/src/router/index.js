@@ -6,6 +6,7 @@ import Decks from '@/components/Decks'
 import Login from '@/components/Login'
 import Statistics from '@/components/Statistics'
 import PlatformConfigs from '@/components/PlatformConfigs'
+import UserProfile from '@/components/UserProfile'
 
 Vue.use(Router)
 
@@ -27,6 +28,11 @@ export default new Router({
             path: '/users',
             name: 'users',
             component: Users,
+            beforeEnter: requireAuth
+        },
+        {
+            path: '/users/:id',
+            component: UserProfile,
             beforeEnter: requireAuth
         },
         {
