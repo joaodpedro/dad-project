@@ -61,6 +61,24 @@ class DbHelper{
         });
     }
 
+    resetUserPassword(token, password, callback){
+        connection.execute('SELECT email, MAX(created_at) FROM `pwd_resets` WHERE token = ? AND NOW() < expires GROUP BY email;', 
+        [token], 
+        function(err, results, fields){
+            if(results[0]){
+                connection.execute('UPDATE `users` SET password = ?, updated_at = NOW() WHERE email = ?;', 
+                [bcrypt.hashSync(password, bcrypt.genSaltSync(8)), results[0].email], 
+                function(err1, results1, fields1){
+                    callback(err1, results1);
+                });
+            }else{
+                if(!err)
+                    err = {errno:-12, code:'TOKEN_EXPD', message:'Reset token has expired'};
+                callback(err, results);
+            }
+        });
+    }
+
     updateUserEmail(id, email, callback){
         connection.execute('UPDATE `users` SET email = ?, updated_at = NOW() WHERE id = ?;', 
         [email, id], 
@@ -144,6 +162,25 @@ class DbHelper{
         [email], 
         function(err, results, fields){
             callback(err, results);
+        });
+    }
+
+    createResetToken(email, callback){
+        connection.execute('SELECT COUNT(*) AS count FROM `users` WHERE email = ?', 
+        [email], 
+        function(err, results, fields){
+            if(results[0].count > 0){
+                var token = require('crypto').createHash('sha1').update(email+Date.now().toString()).digest('hex');
+                connection.execute('INSERT INTO `pwd_resets`(email, token, expires) VALUES(?, ?, DATE_ADD(NOW(), INTERVAL 1 HOUR));', 
+                [email, token], 
+                function(err1, results1, fields1){
+                    callback(err1, token);
+                });
+            }else{
+                if(!err)
+                    err = {errno:-13, code:'EMAIL_NOTFND', message:'That email doesn\'t seem to be registered'};
+                callback(err, null);
+            }
         });
     }
 }

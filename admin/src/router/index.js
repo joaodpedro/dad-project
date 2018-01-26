@@ -4,6 +4,7 @@ import auth from '@/auth'
 import Users from '@/components/Users'
 import Decks from '@/components/Decks'
 import Login from '@/components/Login'
+import Reset from '@/components/Reset'
 import Statistics from '@/components/Statistics'
 import PlatformConfigs from '@/components/PlatformConfigs'
 import UserProfile from '@/components/UserProfile'
@@ -46,6 +47,16 @@ export default new Router({
             name: 'configs',
             component: PlatformConfigs,
             beforeEnter: requireAuth
+        },
+        {
+            path: '/forgot',
+            name: 'forgot',
+            component: Reset
+        },
+        {
+            path: '/reset/:token',
+            name: 'reset',
+            component: Reset
         },
         {
             path: '/logout',

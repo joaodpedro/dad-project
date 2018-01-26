@@ -24,7 +24,8 @@ export default {
     },
   
     getLoggedUser () {
-        return JSON.parse(localStorage.user);
+        var u = localStorage.user || null;
+        return JSON.parse(u);
     },
   
     logout (cb) {

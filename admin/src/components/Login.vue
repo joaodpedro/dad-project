@@ -21,7 +21,7 @@
                 v-model="user.password">
             
             <div class="checkbox mb-3">
-                <label><a href="#">Forgot your password?</a></label>
+                <label><router-link to="/forgot">Forgot your password?</router-link></label>
             </div>
             
             <button type="submit" class="btn btn-lg btn-primary btn-block">Login in</button>
