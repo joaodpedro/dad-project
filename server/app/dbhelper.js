@@ -115,25 +115,26 @@ class DbHelper{
     /*================================================================================
       ======================================GAMES=====================================
       ================================================================================*/
-    getLobbyGames(callback){
-        connection.execute('SELECT games.id, dad_project.users.nickname, date_format(games.created_at,"%d/%m/%Y %H:%i:%s") as created_at , games.total_players FROM dad_project.games LEFT JOIN dad_project.users ON dad_project.games.created_by = dad_project.users.id WHERE games.status = "Pending";', 
+    getLobbyGames(id,callback){
+        connection.execute('SELECT games.id, dad_project.users.nickname, date_format(games.created_at,"%d/%m/%Y %H:%i:%s") as created_at , games.total_players FROM dad_project.games LEFT JOIN dad_project.users ON dad_project.games.created_by = dad_project.users.id WHERE games.status = "Pending" AND games.created_by != ?;', 
+        [id], 
           function(err, results, fields) {
             callback(err, results);
         });
     }
 
-    createGame(game, callback){
-        connection.execute('INSERT INTO dad_project.games(created_by, deck_used) VALUES(?, ?);', 
-          [game.createdBy, game.deckUse], 
+    createGame(user_id, callback){
+        connection.execute('INSERT INTO dad_project.games(created_by, deck_used) VALUES(?, 1);', 
+          [user_id], 
           function(err, results, fields){
             callback(err, results);
         });
     }
 
 
-    joinGame(game, callback){
+    joinGame(game_id,player_id, callback){
         connection.execute('INSERT INTO dad_project.game_user(game_id, user_id) VALUES(?, ?);', 
-          [game.game.id, game.user , game.game.total_players, game.game.id], 
+          [game_id, player_id], 
           function(err, results, fields){
             callback(err, results);
         });
@@ -144,6 +145,22 @@ class DbHelper{
           [game.total_players, game.id], 
           function(err, results, fields){
             callback(err, results);
+        });
+    }
+
+    getActiveGames(id,callback){
+        connection.execute('SELECT games.* from game_user left join games on game_user.game_id = games.id where game_user.user_id = ? and status != "Finished"', 
+        [id], 
+        function(err, results, fields){
+          callback(err, results);
+      }); 
+    }
+
+    getGamePlayers(game_id,callback){
+        connection.execute('select users.id , users.nickname, total_points, total_games_played from game_user left join users on user_id = users.id where game_id = ?;',
+        [game_id],
+        function(err,players){
+            callback(err,players);
         });
     }
 
