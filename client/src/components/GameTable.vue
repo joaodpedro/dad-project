@@ -7,8 +7,9 @@
          <div class="game-zone-content">       
             <div class="table">
                 <div>
-                    
-
+                    <!--<ul v-if = "players.length > 0"><li v-for="player in players" :key="player.id" >Player:{{player.nickname}}</li></ul>
+-->
+                        
                 </div>
             </div>
         </div>
@@ -23,7 +24,6 @@ export default {
     name: 'GameTable',
     data () {
         return {
-            players: [],
             errorMessage: '',
             successMessage: ''
         }
@@ -36,6 +36,7 @@ export default {
     },
     mounted(){
         this.getPlayers();
+        //console.log(this.$root.players);
     }
 }
 </script>

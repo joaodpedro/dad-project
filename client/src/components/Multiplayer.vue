@@ -22,7 +22,8 @@ export default {
                 currentPlayer: 'Player X',
                 lobbyGames: [],
                 activeGames: [],
-                socketId: "",
+                socketId: ""
+                //players: this.$root.players
             }
         },
     methods: { 
@@ -40,10 +41,15 @@ export default {
         loadActiveGames(){
                 this.$socket.emit('get_my_activegames',this.$root.$data['loggedUser'].id);
         }
+        
 
     },
     
     sockets: {
+        this_game_players(data){
+            //players.set(data.gameId, data.ps);
+            //console.log(players)
+        },
         my_active_games_changed(){
              this.loadActiveGames();
         },
@@ -62,6 +68,7 @@ export default {
     },
     mounted(){
         this.loadGames();
+        this.loadActiveGames();
     },
     components: {
             'game': GameTable,

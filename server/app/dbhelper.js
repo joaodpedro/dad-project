@@ -153,8 +153,15 @@ class DbHelper{
         [id], 
         function(err, results, fields){
           callback(err, results);
-      });
-        
+      }); 
+    }
+
+    getGamePlayers(game_id,callback){
+        connection.execute('select users.id , users.nickname, total_points, total_games_played from game_user left join users on user_id = users.id where game_id = ?;',
+        [game_id],
+        function(err,players){
+            callback(err,players);
+        });
     }
 
 

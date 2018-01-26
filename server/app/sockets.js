@@ -61,6 +61,16 @@ module.exports = function(server, db){
         });
 
 
+        socket.on('get_game_players',function(game_id){
+            db.getGamePlayers(game_id,function(err,players){
+                socket.emit('this_game_players', {gameId:game_id,ps:players});
+            });
+        });
+
+
+        
+
+
 
         
 
