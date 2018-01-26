@@ -183,6 +183,18 @@ class DbHelper{
             }
         });
     }
+
+    
+    /*================================================================================
+      =====================================CONFIGS====================================
+      ================================================================================*/
+    //NUMBER GAMES BY DAY && AVG BY DAY
+    //SELECT COUNT(*) AS count, COUNT(*)/COUNT(DISTINCT created_at), created_at AS avg FROM `games` WHERE status = 'Finished' GROUP BY created_at
+
+    //TOTAL GAMES
+    //SELECT COUNT(*) AS count FROM `games` WHERE status = 'Finished'
+
+    //total de jogos, as vitórias, empates e derrotas de cada um;
 }
 
 module.exports = DbHelper;
