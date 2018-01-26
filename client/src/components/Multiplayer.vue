@@ -1,15 +1,19 @@
 <template>
     <div class="Multiplayer">
-        <h3 class="text-center">{{ title }}</h3>      
-        <lobby v-if="lobbyGames.legnth > 0" :games="lobbyGames" @join-click="joinGame">Join</lobby>  
+        <h3 class="text-center">{{ title }}</h3>
+        <lobby :games = "lobbyGames" @create-click="createGame" @join-click="joinGame"></lobby>
+        <template v-for="game in activeGames">
+            <game  :game="game"> </game>
+        </template>
+              
     </div>
 </template>
 
 <script>
 import axios from 'axios';
 
+import GameTable from './GameTable.vue';
 import Lobby from './Lobby.vue';
-import GameTable from './gameTable.vue';
 
 export default {
      data: function(){
@@ -21,58 +25,48 @@ export default {
                 socketId: "",
             }
         },
-    methods: {
-        loadGames(){
-            axios.get('http://localhost:8080/api/games').then((response) => {
-                this.lobbyGames = response.data;
-                
-                console.log(lobbyGames);
-            })
-            .catch((err) => {
-                console.log(err);
-            });      
-        },
+    methods: { 
         createGame(){
-            axios.post('http://localhost:8080/api/games', {createdBy: this.$root.$data['loggedUser'].id , deckUse: 1})
-            .then((response) => {
-                this.successMessage='Game Successfully Created'
-                this.errorMessage='';
-    
-                //Enviar MEnsagem ao socket
-                this.$socket.emit('LobbyRF');            
-            })
-            .catch((err) => {
-                this.successMessage='';
-                this.errorMessage=err.response.data.message; 
-                console.log(err);
-            });
+            this.$socket.emit('createGame',this.$root.$data['loggedUser'].id);    
+        },
+         loadGames(){
+            this.$socket.emit('LobbyLoad',this.$root.$data['loggedUser'].id);    
         },
         joinGame(game){
             game.total_players++;
-            axios.post('http://localhost:8080/api/games/joinGame', {game: game, user: this.$root.$data['loggedUser'].id})
-            .then((response) => {
-                this.successMessage='Join Successfully'
-                this.errorMessage=''; 
-            })
-            .catch((err) => {
-                this.successMessage='';
-                this.errorMessage=err.response.data.message; 
-                console.log(err);
-            });
+            this.$socket.emit('join_game',{game: game, player_id:this.$root.$data['loggedUser'].id});   
+        },
+
+        loadActiveGames(){
+                this.$socket.emit('get_my_activegames',this.$root.$data['loggedUser'].id);
         }
+
     },
+    
     sockets: {
+        my_active_games_changed(){
+             this.loadActiveGames();
+        },
+         my_active_games(games){
+                this.activeGames = games;
+        },
+        connect(){
+             this.socketId = this.$socket.id;
+        },
         lobbyChange(){
             this.loadGames();
         },
-    },
-    components: {
-            'lobby': Lobby,
-            'game': GameTable,
+        my_lobby_games(games){
+                this.lobbyGames = games;
         },
+    },
     mounted(){
         this.loadGames();
-    }
+    },
+    components: {
+            'game': GameTable,
+            'lobby' :Lobby
+        }
 }
 </script>
 

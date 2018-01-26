@@ -1,13 +1,14 @@
 <template>
   <div class="gameTable">
         <div>
-            <h2 class="text-center">Game {{ game.gameID }}</h2>
+            <h2 class="text-center">Game {{ game.id }}</h2>
             <br>
         </div>
          <div class="game-zone-content">       
             <div class="table">
                 <div>
-                    <!--DeSENHAR MESA DE JOGO -->
+                    
+
                 </div>
             </div>
         </div>
@@ -18,6 +19,7 @@
 import axios from 'axios';
 
 export default {
+    props: ['game'],
     name: 'GameTable',
     data () {
         return {
@@ -27,10 +29,13 @@ export default {
         }
     },
     methods: {
+        getPlayers(){
+            this.$socket.emit('get_game_players',this.game.id);
+        }
         
     },
-    sockets: {
-     
+    mounted(){
+        this.getPlayers();
     }
 }
 </script>

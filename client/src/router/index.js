@@ -18,11 +18,6 @@ export default new Router({
       component: Statistic
     },
     {
-        path: '/multiplayer',
-        name: 'multiplayer',
-        component: Multiplayer
-    },
-    {
       path: '/testme',
       name: 'testme',
       component: Testme,
@@ -32,6 +27,11 @@ export default new Router({
         path: '/login',
         name: 'login',
         component: Login
+    },
+    {
+        path: '/activeGames',
+        name: 'activeGames',
+        component: Multiplayer
     },
     {
         path: '/register',

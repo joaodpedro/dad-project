@@ -1,7 +1,7 @@
 <template>
     <div class="lobby">
         <div class="row">
-            <button class="btn btn-primary btn-sm" @click="createGame()">Create Game</button>
+            <button class="btn btn-primary btn-sm"  v-on:click.prevent="create()">Create Game</button>
         </div>
 
         <table class="table table-hover table-striped">
@@ -30,14 +30,27 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
-		props: ['games'],
-        methods: {
-            join(game) {
-            	this.$emit('join-click', game);
-            },		
+    props: ['games'],
+    data: function(){
+			return {
+                title: 'Lobby'
+            }
         },		
-	}
+    methods: {
+        join(game) {
+            	this.$emit('join-click', game);
+            },	
+        create() {
+            	this.$emit('create-click');
+            },	
+     },
+    sockets: {
+        
+}
+}
+
 </script>
 
 <style>
