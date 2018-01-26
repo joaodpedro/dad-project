@@ -18,7 +18,7 @@
                         <router-link class="nav-link" to="/testme">Decks</router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link class="nav-link" to="/lobby" v-if="loggedIn">Lobby</router-link>
+                        <router-link class="nav-link" to="/multiplayer" v-if="loggedIn">Lobby</router-link>
                     </li>
                 </ul>
                 <ul class="navbar-nav">

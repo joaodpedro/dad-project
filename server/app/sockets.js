@@ -12,7 +12,12 @@ module.exports = function(server, db){
             logSocket(socket.id, 'msg', data);
             io.emit('response', data);
         });
+
+
+        //fazer Connect a um lobby
+       
         
+        //Fazer Refresh aos lobby's
         socket.on('LobbyRF', function(){
             logSocket(socket.id, 'rfs', "Lobby Changed");
             io.emit('lobbyChange');

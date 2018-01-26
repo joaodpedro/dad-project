@@ -5,7 +5,7 @@ import Login from '@/components/Login'
 import auth from '@/utils/auth'
 import Statistic from '@/components/Statistics'
 import Register from '@/components/Register'
-import Lobby from '@/components/Lobby'
+import Multiplayer from '@/components/Multiplayer'
 
 Vue.use(Router)
 
@@ -18,9 +18,9 @@ export default new Router({
       component: Statistic
     },
     {
-        path: '/lobby',
-        name: 'lobby',
-        component: Lobby
+        path: '/multiplayer',
+        name: 'multiplayer',
+        component: Multiplayer
     },
     {
       path: '/testme',
