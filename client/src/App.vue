@@ -37,8 +37,6 @@
             </div>
         </nav>
 
-
-
         <main role="main" >
           <div class="container"> <router-view/></div>
         </main><!-- /.container -->
@@ -58,7 +56,14 @@ export default {
   created () {
     auth.onChange = loggedIn => {
       this.loggedIn = loggedIn;
+      this.$root.$data['loggedUser'] = auth.getLoggedUser();
     }
+    document.addEventListener('beforeunload', this.unloadHandler());
+  },
+  methods: {
+      unloadHandler(){
+          auth.logout();
+      }
   }
 }
 </script>

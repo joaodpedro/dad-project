@@ -47,7 +47,7 @@ export default {
   },
   created () {
     auth.onChange = loggedIn => {
-      this.loggedIn = loggedIn
+      this.loggedIn = loggedIn;
       this.$root.$data['loggedUser'] = auth.getLoggedUser();
     }
     document.addEventListener('beforeunload', this.unloadHandler());

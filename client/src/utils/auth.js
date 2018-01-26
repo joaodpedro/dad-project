@@ -24,8 +24,10 @@ export default {
     },
   
     getLoggedUser () {
-        return JSON.parse(localStorage.user);
+        var u = localStorage.user || null;
+        return JSON.parse(u);
     },
+
     logout (cb) {
         axios.get('http://localhost:8080/api/logout').then(response => {
             delete localStorage.user;
@@ -43,13 +45,11 @@ export default {
   
 function doRequest (nickname, pass, cb) {
     axios.post('http://localhost:8080/api/login', {username: nickname, password: pass}).then(response => {
-    if(response.status == 200){
+        if(response.status == 200){
             cb({
                 authenticated: true,
-                user: response.data
-                
+                user: response.data    
             })
-            
         }else {
             cb({ authenticated: false });
         }
