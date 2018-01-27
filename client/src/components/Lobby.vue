@@ -1,7 +1,14 @@
 <template>
     <div class="lobby">
-        <div class="row">
-            <button class="btn btn-primary btn-sm"  v-on:click.prevent="create()">Create Game</button>
+        
+        <div class="row mt-4 mb-2">
+            <div class="col-12">
+                <button class="btn btn-success btn-lg float-right"  v-on:click.prevent="create()">Create New Game</button>
+            </div>
+            <div class="col-12 mt-2">
+                <div class="alert" :class="this.$parent.alertType" v-if="this.$parent.message" 
+                    v-html="this.$parent.message" role="alert" ></div>
+            </div>
         </div>
 
         <table class="table table-hover table-striped">
@@ -34,23 +41,23 @@ import axios from 'axios';
 export default {
     props: ['games'],
     data: function(){
-			return {
-                title: 'Lobby'
-            }
-        },		
+        return {
+            title: 'Lobby'
+        }
+    },		
     methods: {
         join(game) {
-            	this.$emit('join-click', game);
-            },	
+            if(!this.$parent.activeGames.some(g => g.id === game.id)){
+                this.$emit('join-click', game);
+            }else{
+                this.$parent.sendNotification('You have already joined this game!<br/>Wait for the creator to start it', 'alert-warning')
+            }
+        },	
         create() {
-            	this.$emit('create-click');
-            },	
-     },
-    sockets: {
-        
+           	this.$emit('create-click');
+        },	
+    }
 }
-}
-
 </script>
 
 <style>

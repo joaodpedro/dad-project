@@ -1,9 +1,11 @@
 <template>
     <div class="Multiplayer">
         <h3 class="text-center">{{ title }}</h3>
+        
         <lobby :games = "lobbyGames" @create-click="createGame" @join-click="joinGame"></lobby>
+        
         <template v-for="game in activeGames">
-            <game  :game="game"> </game>
+            <game  :game="game" :key="game.id" :players="players"></game>
         </template>
               
     </div>
@@ -16,64 +18,72 @@ import GameTable from './GameTable.vue';
 import Lobby from './Lobby.vue';
 
 export default {
-     data: function(){
-			return {
-                title: 'BalckJack',
-                currentPlayer: 'Player X',
-                lobbyGames: [],
-                activeGames: [],
-                socketId: ""
-                //players: this.$root.players
-            }
+    data: function(){
+        return {
+            title: 'BalckJack',
+            currentPlayer: 'Player X',
+            lobbyGames: [],
+            activeGames: [],
+            players: {},
+            socketId: "",
+            message: '',
+            alertType: ''
+        }
+    },
+    methods: {
+        loadLobbyGames(){
+            this.$socket.emit('get_lobby_games', this.$root.$data['loggedUser'].id);    
         },
-    methods: { 
         createGame(){
-            this.$socket.emit('createGame',this.$root.$data['loggedUser'].id);    
-        },
-         loadGames(){
-            this.$socket.emit('LobbyLoad',this.$root.$data['loggedUser'].id);    
+            this.sendNotification('New game created', 'alert-success');
+            this.$socket.emit('create_game', this.$root.$data['loggedUser'].id);    
         },
         joinGame(game){
             game.total_players++;
-            this.$socket.emit('join_game',{game: game, player_id:this.$root.$data['loggedUser'].id});   
+            this.sendNotification('Joined <strong>Game #' + game.id + '</strong>', 'alert-success');
+            this.$socket.emit('join_game', {game: game, player_id: this.$root.$data['loggedUser'].id});
         },
-
         loadActiveGames(){
-                this.$socket.emit('get_my_activegames',this.$root.$data['loggedUser'].id);
+            this.$socket.emit('get_my_active_games', this.$root.$data['loggedUser'].id);
+        },
+        loadGamePlayers(game_id){
+            this.$socket.emit('get_this_game_players', game_id);
+        },
+        sendNotification(message, alertType){
+            this.message = message;
+            this.alertType = alertType;
+            setTimeout(() =>{ this.message = ''; this.alertType = ''; }, 3000);
         }
-        
-
     },
-    
     sockets: {
-        this_game_players(data){
-            //players.set(data.gameId, data.ps);
-            //console.log(players)
-        },
-        my_active_games_changed(){
-             this.loadActiveGames();
-        },
-         my_active_games(games){
-                this.activeGames = games;
-        },
         connect(){
-             this.socketId = this.$socket.id;
-        },
-        lobbyChange(){
-            this.loadGames();
+            this.socketId = this.$socket.id;
         },
         my_lobby_games(games){
-                this.lobbyGames = games;
+            this.lobbyGames = games;
+        },
+        my_active_games_changed(){
+            this.loadActiveGames();
+        },
+        my_active_games(games){
+            this.activeGames = games;
+            for(let game of games){ this.loadGamePlayers(game.id); }
+        },
+        lobby_change(){
+            this.loadLobbyGames();
+        },
+        this_game_players(data){
+            this.players[data.gameId] = data.ps;
         },
     },
     mounted(){
-        this.loadGames();
+        this.loadLobbyGames();
         this.loadActiveGames();
     },
     components: {
-            'game': GameTable,
-            'lobby' :Lobby
-        }
+        'game': GameTable,
+        'lobby': Lobby
+    }
 }
 </script>
 

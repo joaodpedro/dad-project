@@ -14,7 +14,6 @@ new Vue({
   router,
   data: {
     loggedUser:null
-    //players: new Map()
   },
   components: { App },
   template: '<App/>'

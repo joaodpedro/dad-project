@@ -1,24 +1,21 @@
 <template>
   <div id="app">
         <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-            <router-link class="navbar-brand" to="/statistics">BlackJack Game </router-link>
+            <router-link class="navbar-brand" to="/">BlackJack Game </router-link>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsMenu" aria-controls="navbarsMenu" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="navbarsMenu">
                 <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <router-link class="nav-link" to="/games" v-if="loggedIn">Games</router-link>
+                    </li>
                     <li class="nav-item active">
                         <router-link class="nav-link" to="/statistics">Statistics <span class="sr-only">(current)</span></router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link class="nav-link" to="/">Users</router-link>
-                    </li>
-                    <li class="nav-item">
-                        <router-link class="nav-link" to="/testme">Decks</router-link>
-                    </li>
-                     <li class="nav-item">
-                        <router-link class="nav-link" to="/activeGames" v-if="loggedIn">Games</router-link>
+                        <router-link class="nav-link" to="/profile" v-if="loggedIn">Profile</router-link>
                     </li>
                 </ul>
                 <ul class="navbar-nav">

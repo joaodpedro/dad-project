@@ -1,9 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Testme from '@/components/Testme'
-import Login from '@/components/Login'
 import auth from '@/utils/auth'
-import Statistic from '@/components/Statistics'
+import Login from '@/components/Login'
+import Statistics from '@/components/Statistics'
 import Register from '@/components/Register'
 import Multiplayer from '@/components/Multiplayer'
 
@@ -14,29 +13,35 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'statistic',
-      component: Statistic
+      name: 'home',
+      component: Statistics
     },
     {
-      path: '/testme',
-      name: 'testme',
-      component: Testme,
-      beforeEnter: requireAuth
+        path: '/statistics',
+        name: 'statistics',
+        component: Statistics
     },
     {
-        path: '/login',
-        name: 'login',
-        component: Login
+        path: '/games',
+        name: 'games',
+        component: Multiplayer,
+        beforeEnter: requireAuth
     },
     {
-        path: '/activeGames',
-        name: 'activeGames',
-        component: Multiplayer
+        path: '/profile',
+        name: 'profile',
+        component: Statistics,
+        beforeEnter: requireAuth
     },
     {
         path: '/register',
         name: 'register',
         component: Register
+    },
+    {
+        path: '/login',
+        name: 'login',
+        component: Login
     },
     {
         path: '/logout',
