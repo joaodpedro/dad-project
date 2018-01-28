@@ -164,6 +164,14 @@ class DbHelper{
         });
     }
 
+    startGame(game_id, callback){
+        connection.execute('UPDATE `games` SET status = "Active" WHERE games.id = ?;', 
+        [game_id], 
+        function(err, results, fields){
+          callback(err, results);
+      }); 
+    }
+
 
     /*================================================================================
       =====================================CONFIGS====================================

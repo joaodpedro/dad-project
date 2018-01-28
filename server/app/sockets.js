@@ -55,6 +55,14 @@ module.exports = function(server, db){
             });
         });
 
+        socket.on('start_this_game', function(game_id){
+            
+            db.startGame(game_id, function(err, results){
+            io.emit('lobby_change');   
+            //Dar inicio ao jogo
+            });
+        });
+
 
     });
 

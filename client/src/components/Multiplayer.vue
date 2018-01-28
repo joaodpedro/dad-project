@@ -5,9 +5,8 @@
         <lobby :games = "lobbyGames" @create-click="createGame" @join-click="joinGame"></lobby>
         
         <template v-for="game in activeGames">
-            <game  :game="game" :key="game.id" :players="players"></game>
+            <game  :game="game" :key="game.id" :players="players" @start-click="startGame"></game>
         </template>
-              
     </div>
 </template>
 
@@ -53,6 +52,9 @@ export default {
             this.message = message;
             this.alertType = alertType;
             setTimeout(() =>{ this.message = ''; this.alertType = ''; }, 3000);
+        },
+        startGame(game_id){
+            this.$socket.emit('start_this_game', game_id);
         }
     },
     sockets: {
