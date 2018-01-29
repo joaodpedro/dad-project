@@ -5,7 +5,7 @@
         <lobby :games = "lobbyGames" @create-click="createGame" @join-click="joinGame"></lobby>
         
         <template v-for="game in activeGames">
-            <game  :game="game" :key="game.id" @start-click="startGame"></game>
+            <game  :game="game" :key="game.id"></game>
         </template>
     </div>
 </template>
@@ -23,6 +23,7 @@ export default {
             currentPlayer: 'Player X',
             lobbyGames: [],
             activeGames: [],
+            cards: {},
             socketId: "",
             message: '',
             alertType: ''
@@ -43,9 +44,6 @@ export default {
         },
         loadActiveGames(){
             this.$socket.emit('get_my_active_games', this.$root.$data['loggedUser'].id);
-        },
-        startGame(game_id){
-            this.$socket.emit('start_this_game', game_id);
         },
         sendNotification(message, alertType){
             this.message = message;
@@ -68,6 +66,9 @@ export default {
         },
         lobby_change(){
             this.loadLobbyGames();
+        },
+        cards_changed(cards){
+            console.log(cards);
         }
     },
     mounted(){

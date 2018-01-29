@@ -1,6 +1,8 @@
 var dbhelper = require('./dbhelper');
 var db = new dbhelper();
 var carta = require('../models/cartasmodel.js');
+var gameModel = require('../models/game.js');
+var game = new gameModel();
 
 function logSocket(from, event, msg){
     console.log('[%s]::(%s)::%s', from, event.toUpperCase(), msg);
@@ -56,19 +58,20 @@ module.exports = function(server, db){
             });
         });
 
-        socket.on('start_this_game', function(game_id){
-            db.startGame(game_id, function(err, results){
-            io.emit('lobby_change');   
-            //Dar inicio ao jogo
-            var baralho = [];
-            db.getCartas(1,function(err, results){
-                for(var i=0 ; i<results.length ; i++){
-                    baralho[i]=new carta(results[i].id,results[i].value,results[i].suite,results[i].deck_id,results[i].path);
-                }
-                console.log(baralho);
-            })
+        socket.on('start_this_game', function(data){
+            db.startGame(data.game_id, function(err, results){
+                //Dar inicio ao jogo
+                var baralho = [];
+                db.getCartas(1,function(err, results){
+                    for(var i=0 ; i < results.length ; i++){
+                        baralho[i]=new carta(results[i].id, results[i].value, results[i].suite, results[i].deck_id, results[i].path);
+                    }
+                    game.shuffleDeck(baralho);
+                });
 
-
+                console.log(data.players);
+               //io.to('game'+data.game_id).emit('cards_changed', game.giveFirstCards(data.players));
+                io.emit('lobby_change');
             });
         });
 
