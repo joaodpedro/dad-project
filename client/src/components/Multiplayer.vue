@@ -5,7 +5,7 @@
         <lobby :games = "lobbyGames" @create-click="createGame" @join-click="joinGame"></lobby>
         
         <template v-for="game in activeGames">
-            <game  :game="game" :key="game.id" :players="players" @start-click="startGame"></game>
+            <game  :game="game" :key="game.id" @start-click="startGame"></game>
         </template>
     </div>
 </template>
@@ -23,7 +23,6 @@ export default {
             currentPlayer: 'Player X',
             lobbyGames: [],
             activeGames: [],
-            players: {},
             socketId: "",
             message: '',
             alertType: ''
@@ -45,16 +44,13 @@ export default {
         loadActiveGames(){
             this.$socket.emit('get_my_active_games', this.$root.$data['loggedUser'].id);
         },
-        loadGamePlayers(game_id){
-            this.$socket.emit('get_this_game_players', game_id);
+        startGame(game_id){
+            this.$socket.emit('start_this_game', game_id);
         },
         sendNotification(message, alertType){
             this.message = message;
             this.alertType = alertType;
             setTimeout(() =>{ this.message = ''; this.alertType = ''; }, 3000);
-        },
-        startGame(game_id){
-            this.$socket.emit('start_this_game', game_id);
         }
     },
     sockets: {
@@ -69,14 +65,10 @@ export default {
         },
         my_active_games(games){
             this.activeGames = games;
-            for(let game of games){ this.loadGamePlayers(game.id); }
         },
         lobby_change(){
             this.loadLobbyGames();
-        },
-        this_game_players(data){
-            this.players[data.gameId] = data.ps;
-        },
+        }
     },
     mounted(){
         this.loadLobbyGames();

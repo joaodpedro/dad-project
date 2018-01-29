@@ -111,6 +111,14 @@ class DbHelper{
         });
     }
 
+    getCartas(deck,callback){
+        connection.execute('SELECT * FROM cards WHERE deck_id = ?;',
+        [deck],
+        function(err,results,fields){
+            callback(err,results)
+        } );
+    }
+
 
     /*================================================================================
       ======================================GAMES=====================================

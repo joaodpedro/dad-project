@@ -1,5 +1,6 @@
 var dbhelper = require('./dbhelper');
 var db = new dbhelper();
+var carta = require('../models/cartasmodel.js');
 
 function logSocket(from, event, msg){
     console.log('[%s]::(%s)::%s', from, event.toUpperCase(), msg);
@@ -56,15 +57,18 @@ module.exports = function(server, db){
         });
 
         socket.on('start_this_game', function(game_id){
-            
             db.startGame(game_id, function(err, results){
             io.emit('lobby_change');   
             //Dar inicio ao jogo
+            var baralho = [carta];
+
+
             });
         });
 
 
     });
-
+    
     return io;
 }
+

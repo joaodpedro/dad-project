@@ -17,14 +17,9 @@ module.exports = function(router, passport, db){
         });
     });
 
-    router.post('/joinGame',function(req, res){
-        db.joinGame(req.body,function(err, result){
-            db.updateTotalPlayer(req.body.game,function(err, result){
-                var data = {
-                    rows: result ? result.affectedRows : 0, 
-                    id: result ? result.insertId : -1 };
-                return helper.handleResponse(res, err, data);   
-            })
+    router.get('/:game_id/players', /*helper.isLoggedIn,*/ function(req, res){
+        db.getGamePlayers(req.params.game_id, function(err, players){
+            return helper.handleResponse(res, err, players);
         });
     });
 

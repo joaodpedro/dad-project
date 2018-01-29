@@ -5,8 +5,8 @@
         <div class="game-zone-content">       
             <div class="table">
                 <div>
-                    <ul v-if = "players[game.id]">
-                        <li v-for="player in players[game.id]">Player: {{ player.nickname }}</li>
+                    <ul v-if ="players.length > 0">
+                        <li v-for="player in players">Player: {{ player.nickname }}</li>
                     </ul> 
                 </div>
             </div>
@@ -19,21 +19,30 @@
 import axios from 'axios';
 
 export default {
-    props: ['game', 'players'],
+    props: ['game'],
     name: 'GameTable',
-    data () {
+    data: function() {
         return {
-            errorMessage: '',
-            successMessage: ''
+            players: []
         }
     },
     methods:{
         start(game) {
-                this.$emit('start-click', game);
+            this.$emit('start-click', game);
         },
+        getGamePlayers(){
+            axios.get('http://localhost:8080/api/games/' + this.game.id + '/players').then(response =>{
+                console.log(response.data);
+                this.players = response.data;
+            })
+            .catch(err =>{
+                console.log(err);
+            });
+        }
     },
     mounted(){
-        console.log(this.players[this.game.id]);
+        this.getGamePlayers();
+        console.log(this.players);
     }
 }
 </script>
