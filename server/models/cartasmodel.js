@@ -1,16 +1,18 @@
 class carta{
-    constructor(id,face,naipe,deck_id,path,value) {
+    constructor(id,face,naipe,deck_id,path) {
         this.cartaID = id;
         this.face = face;
         this.naipe= naipe;
         this.deck_id = deck_id;
         this.path = path;
-        this.value = getCardValue(face);
+        this.value = getCardValue(this.face);
     }
-    getCardValue(value){
-        face=='K' || face=='J' || face=='K' ? value=10 : (face=='A' ? value=11 : value=face);
-    }
+   
 }
 
 
 module.exports = carta;
+
+function getCardValue(face){
+    return face=='K' || face=='J' || face=='Q' ? 10 : (face=='A' ? 11 : face);
+}

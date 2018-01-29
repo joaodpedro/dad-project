@@ -60,7 +60,13 @@ module.exports = function(server, db){
             db.startGame(game_id, function(err, results){
             io.emit('lobby_change');   
             //Dar inicio ao jogo
-            var baralho = [carta];
+            var baralho = [];
+            db.getCartas(1,function(err, results){
+                for(var i=0 ; i<results.length ; i++){
+                    baralho[i]=new carta(results[i].id,results[i].value,results[i].suite,results[i].deck_id,results[i].path);
+                }
+                console.log(baralho);
+            })
 
 
             });
