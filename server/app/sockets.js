@@ -53,13 +53,6 @@ module.exports = function(server, db){
             });
         });
 
-        /*socket.on('get_this_game_players', function(game_id){
-            logSocket(socket.id, 'get_this_game_players', 'Get players of game#:' + game_id);
-            db.getGamePlayers(game_id, function(err, players){
-                socket.emit('this_game_players', {gameId:game_id, ps:players});
-            });
-        });*/
-
         socket.on('start_this_game', function(data){
             db.startGame(data.game_id, function(err, results){
                 //Dar inicio ao jogo

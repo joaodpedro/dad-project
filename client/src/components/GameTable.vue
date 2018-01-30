@@ -5,7 +5,7 @@
         <div class="alert" :class="gameAlertType" v-if="gameMessage" 
             v-html="gameMessage" role="alert" ></div>
         
-        <button v-if="game.created_by == this.$root.$data['loggedUser'].id" @click.prevent="start()">Start</button>
+        <button class="btn btn-success" v-if="game.created_by == this.$root.$data['loggedUser'].id" @click.prevent="start()">Start Game</button>
         <div class="game-zone-content">
             <div class="table">
                 <div>
@@ -37,6 +37,7 @@ export default {
                 this.sendGameNotification('Not enough players! <strong>Minimum 2 players</strong>', 'alert-warning');
                 return;   
             }
+            this.sendGameNotification('Not implemented yet', 'alert-info');
             this.$socket.emit('start_this_game', {game_id: this.game.id, players: this.players});
         },
         getGamePlayers(){

@@ -222,12 +222,81 @@ class DbHelper{
       ======================================STATS=====================================
       ================================================================================*/
     //NUMBER GAMES BY DAY && AVG BY DAY
-    //SELECT COUNT(*) AS count, COUNT(*)/COUNT(DISTINCT created_at), created_at AS avg FROM `games` WHERE status = 'Finished' GROUP BY created_at
+    getGamesByDay(callback){
+        connection.execute('SELECT COUNT(*) AS count, COUNT(*)/COUNT(DISTINCT created_at) AS avg FROM `games` GROUP BY created_at', //WHERE status = "Finished"
+        function(err, results, fields){
+            callback(err, results[0]);
+        });
+    }
+
+    //GET DAYS WITH GAMES
+    getDistinctGameDays(callback){
+        connection.execute('SELECT DISTINCT created_at FROM `games`;', 
+        function(err, results, fields){
+            callback(err, results);
+        });
+    }
 
     //TOTAL GAMES
-    //SELECT COUNT(*) AS count FROM `games` WHERE status = 'Finished'
+    getTotalGames(callback){
+        connection.execute('SELECT COUNT(*) AS count FROM `games`;', //WHERE status = "Finished" 
+        function(err, results, fields){
+            callback(err, results[0]);
+        });
+    }
 
-    //total de jogos, as vitórias, empates e derrotas de cada um;
+    //TOTAL PLAYERS PLATFORM
+    getTotalPlayers(callback){
+        connection.execute('SELECT COUNT(*) AS count FROM `users`;', 
+        function(err, results, fields){
+            callback(err, results[0]);
+        });
+    }
+
+    //TOP 5 MOST GAMES
+    getTop5MostGames(callback){
+        connection.execute('SELECT id, name, nickname, total_games_played FROM `users` ORDER BY total_games_played DESC LIMIT 5;', 
+        function(err, results, fields){
+            callback(err, results);
+        });
+    }
+
+    //TOP 5 MOST POINTS
+    getTop5MostPoints(callback){
+        connection.execute('SELECT id, name, nickname, total_points FROM `users` ORDER BY total_points DESC LIMIT 5;', 
+        function(err, results, fields){
+            callback(err, results);
+        });
+    }
+
+    //TOP 5 BEST AVERAGE
+    getTop5BestPointAverage(callback){
+        connection.execute('SELECT id, name, nickname, (total_points/total_games_played) AS avrg FROM `users` ORDER BY avrg DESC LIMIT 5;', 
+        function(err, results, fields){
+            callback(err, results);
+        });
+    }
+
+    //TOTAL WINS, LOSSES FROM ALL USERS (NO DRAWS)
+    getAllPlayersGameStats(callback){
+        connection.execute('SELECT id, nickname, name, total_games_played, total_points, (total_points/total_games_played) AS avrg_points, '+
+            '(SELECT COUNT(*) FROM `game_user` WHERE winner = 1) AS total_wins, '+
+            '(SELECT COUNT(*) FROM `game_user` WHERE winner = 0) AS total_losses FROM `users`;', 
+        function(err, results, fields){
+            callback(err, results);
+        });
+    }
+    
+    //TOTAL USER WINS, LOSSES, GAMES, POINTS, AVERAGE (NO DRAWS)
+    getPlayerGameStats(id, callback){
+        connection.execute('SELECT total_games_played, total_points, (total_points/total_games_played) AS avrg_points, '+
+            '(SELECT COUNT(*) FROM `game_user` WHERE user_id = ? AND winner = 1) AS total_wins, '+
+            '(SELECT COUNT(*) FROM `game_user` WHERE user_id = ? AND winner = 0) AS total_losses FROM `users` WHERE id = ?;', 
+        [id, id, id],
+        function(err, results, fields){
+            callback(err, results[0]);
+        });
+    }
 }
 
 module.exports = DbHelper;

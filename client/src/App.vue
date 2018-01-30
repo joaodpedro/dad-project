@@ -8,11 +8,14 @@
 
             <div class="collapse navbar-collapse" id="navbarsMenu">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
-                        <router-link class="nav-link" to="/games" v-if="loggedIn">Games</router-link>
-                    </li>
                     <li class="nav-item active">
                         <router-link class="nav-link" to="/statistics">Statistics <span class="sr-only">(current)</span></router-link>
+                    </li>
+                    <li class="nav-item active">
+                        <router-link class="nav-link" to="/top5">Top 5</router-link>
+                    </li>
+                    <li class="nav-item">
+                        <router-link class="nav-link" to="/games" v-if="loggedIn">Games</router-link>
                     </li>
                     <li class="nav-item">
                         <router-link class="nav-link" to="/profile" v-if="loggedIn">Profile</router-link>

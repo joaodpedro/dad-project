@@ -5,7 +5,7 @@
         <lobby :games = "lobbyGames" @create-click="createGame" @join-click="joinGame"></lobby>
         
         <template v-for="game in activeGames">
-            <game  :game="game" :key="game.id" :ref="`game-${game.id}`"></game>
+            <game  :game="game" :key="game.id"></game>
         </template>
     </div>
 </template>
@@ -66,10 +66,7 @@ export default {
             this.loadLobbyGames();
         },
         game_player_join(game_id){
-            this.$refs[`game-${game_id}`].getGamePlayers();
-            console.log(this.$refs['game-'+game_id]);
-            //this.$refs['game'+game_id].getGamePlayers();
-            //this.$refs['game'+game.id].sendGameNotification('A new player joined this game', 'alert-info');
+            //notificar
         }
     },
     mounted(){
