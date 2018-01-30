@@ -2,7 +2,8 @@ var dbhelper = require('./dbhelper');
 var db = new dbhelper();
 var carta = require('../models/cartasmodel.js');
 var gameModel = require('../models/game.js');
-var game = new gameModel();
+var baralho = [];
+var cards = {};
 
 function logSocket(from, event, msg){
     console.log('[%s]::(%s)::%s', from, event.toUpperCase(), msg);
@@ -26,7 +27,7 @@ module.exports = function(server, db){
             logSocket(socket.id, 'create_games', 'Create new game of user#:' + user_id);
             db.createGame(user_id, function(err, result){
                 db.joinGame(result.insertId, user_id, function(erro, results){
-                    socket.join('game' + result.insertId);
+                    socket.join(result.insertId);
                     socket.emit('my_active_games_changed');
                     io.emit('lobby_change');        
                 });
@@ -44,34 +45,37 @@ module.exports = function(server, db){
             logSocket(socket.id, 'join_game', 'User#:' + data.player_id + 'joined game #' + data.game.id);
             db.joinGame(data.game.id, data.player_id, function(err, results){
                 db.updateTotalPlayer(data.game, function(err, results){
-                    socket.join('game' + data.game.id);
-                    io.to('game' + data.game.id).emit('my_active_games_changed');
+                    socket.join(data.game.id);
+                    socket.emit('my_active_games_changed');
+                    io.to(data.game.id).emit('game_player_join', data.game.id);
                     io.emit('lobby_change');
                 });  
             });
         });
 
-        socket.on('get_this_game_players', function(game_id){
+        /*socket.on('get_this_game_players', function(game_id){
             logSocket(socket.id, 'get_this_game_players', 'Get players of game#:' + game_id);
             db.getGamePlayers(game_id, function(err, players){
                 socket.emit('this_game_players', {gameId:game_id, ps:players});
             });
-        });
+        });*/
 
         socket.on('start_this_game', function(data){
             db.startGame(data.game_id, function(err, results){
                 //Dar inicio ao jogo
-                var baralho = [];
-                db.getCartas(1,function(err, results){
+                db.getCartas(1, function(err, results){
+                    //CRIAR GAMEMODEL(data.)
                     for(var i=0 ; i < results.length ; i++){
                         baralho[i]=new carta(results[i].id, results[i].value, results[i].suite, results[i].deck_id, results[i].path);
                     }
-                    game.shuffleDeck(baralho);
-                });
+                    
+                    gameModel.shuffleDeck(baralho);
+                    gameModel.giveFirstCards(data.players, cards, baralho)
 
-                console.log(data.players);
-               //io.to('game'+data.game_id).emit('cards_changed', game.giveFirstCards(data.players));
-                io.emit('lobby_change');
+                    socket.emit('cards_changed', cards);
+                    io.to(data.game_id).emit('cards_changed', cards);
+                    io.emit('lobby_change');
+                });
             });
         });
 
