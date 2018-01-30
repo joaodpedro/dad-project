@@ -56,7 +56,7 @@ module.exports = function(server, db){
         socket.on('start_this_game', function(data){
             db.startGame(data.game_id, function(err, results){
                 //Dar inicio ao jogo
-                db.getCartas(1, function(err, results){
+                db.getCards(1, function(err, results){
                     //CRIAR GAMEMODEL(data.)
                     for(var i=0 ; i < results.length ; i++){
                         baralho[i]=new carta(results[i].id, results[i].value, results[i].suite, results[i].deck_id, results[i].path);

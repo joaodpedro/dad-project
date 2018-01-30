@@ -111,14 +111,6 @@ class DbHelper{
         });
     }
 
-    getCartas(deck,callback){
-        connection.execute('SELECT * FROM cards WHERE deck_id = ?;',
-        [deck],
-        function(err,results,fields){
-            callback(err,results)
-        } );
-    }
-
 
     /*================================================================================
       ======================================GAMES=====================================
@@ -157,7 +149,7 @@ class DbHelper{
     }
 
     getActiveGames(id,callback){
-        connection.execute('SELECT games.* FROM `game_user` LEFT JOIN `games` ON game_user.game_id = games.id WHERE game_user.user_id = ? AND status != "Finished"', 
+        connection.execute('SELECT games.* FROM `game_user` LEFT JOIN `games` ON game_user.game_id = games.id WHERE game_user.user_id = ? AND status != "Active"', 
         [id], 
         function(err, results, fields){
           callback(err, results);
@@ -178,6 +170,24 @@ class DbHelper{
         function(err, results, fields){
           callback(err, results);
       }); 
+    }
+
+    /*================================================================================
+      ======================================DECKS=====================================
+      ================================================================================*/
+    getDecks(callback){
+        connection.execute('SELECT * FROM `decks`', 
+        function(err, results, fields){
+            callback(err, results);
+        });
+    }
+
+    getCards(deck, callback){
+        connection.execute('SELECT * FROM cards WHERE deck_id = ?;',
+        [deck],
+        function(err, results, fields){
+            callback(err,results)
+        });
     }
 
 

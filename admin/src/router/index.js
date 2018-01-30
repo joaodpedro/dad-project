@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import auth from '@/auth'
 import Users from '@/components/Users'
-import Decks from '@/components/Decks'
+import DecksManager from '@/components/DecksManager'
 import Login from '@/components/Login'
 import Reset from '@/components/Reset'
 import Statistics from '@/components/Statistics'
@@ -39,7 +39,7 @@ export default new Router({
         {
             path: '/decks',
             name: 'decks',
-            component: Decks,
+            component: DecksManager,
             beforeEnter: requireAuth
         },
         {
