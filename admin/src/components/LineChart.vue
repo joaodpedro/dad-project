@@ -43,19 +43,38 @@ export default {
             }
         }
     },
+    methods: {
+        renderLineChart: function(){
+            this.renderChart({
+                labels: this.myLabels,
+                datasets: [{
+                    label: 'Games',
+                    borderColor: '#249EBF',
+                    pointBackgroundColor: 'white',
+                    borderWidth: 2,
+                    pointBorderColor: '#249EBF',
+                    backgroundColor: 'rgba(18, 189, 246, 0.4)',
+                    data: this.myData
+                }]
+            }, this.options)
+        }
+    },
+    computed: {
+        myData: function() {
+            return this.chartData;
+        },
+        myLabels: function() {
+            return this.chartLabels;
+        }
+    },
+    watch: {
+        chartData: function() {
+            this.$data._chart.destroy();
+            this.renderLineChart();
+        }
+    },
     mounted () {
-        this.renderChart({
-            labels: this.chartLabels,
-            datasets: [{
-                label: 'Games',
-                borderColor: '#249EBF',
-                pointBackgroundColor: 'white',
-                borderWidth: 2,
-                pointBorderColor: '#249EBF',
-                backgroundColor: 'rgba(18, 189, 246, 0.4)',
-                data: this.chartData
-            }]
-        }, this.options)
+        this.renderLineChart();
     }
 }
 </script>
