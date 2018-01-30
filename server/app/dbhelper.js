@@ -222,16 +222,15 @@ class DbHelper{
       ======================================STATS=====================================
       ================================================================================*/
     //NUMBER GAMES BY DAY && AVG BY DAY
-    getGamesByDay(callback){
-        connection.execute('SELECT COUNT(*) AS count, COUNT(*)/COUNT(DISTINCT created_at) AS avg FROM `games` GROUP BY created_at', //WHERE status = "Finished"
+    getTotalGamesDay(callback){
+        connection.execute('SELECT COUNT(*) AS count, COUNT(*)/COUNT(DISTINCT created_at) AS avg, created_at FROM `games` GROUP BY created_at', //WHERE status = "Finished"
         function(err, results, fields){
             callback(err, results[0]);
         });
     }
 
-    //GET DAYS WITH GAMES
-    getDistinctGameDays(callback){
-        connection.execute('SELECT DISTINCT created_at FROM `games`;', 
+    getGamesByDay(callback){
+        connection.execute('SELECT COUNT(*) as countday, DATE_FORMAT(created_at,"%d/%m/%Y") AS day FROM `games` GROUP BY created_at', 
         function(err, results, fields){
             callback(err, results);
         });

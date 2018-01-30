@@ -3,8 +3,10 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import Datatable from 'vue2-datatable-component'
 
 Vue.config.productionTip = false
+Vue.use(Datatable)
 
 /* eslint-disable no-new */
 new Vue({

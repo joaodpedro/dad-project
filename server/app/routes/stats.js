@@ -1,15 +1,15 @@
 var helper = require('../route-security-helper');
 
 module.exports = function(router, passport, db){
-    router.get('/games-day', function(req, res){
-        db.getGamesByDay(function(err, results){
+    router.get('/total-games-day', function(req, res){
+        db.getTotalGamesDay(function(err, results){
             return helper.handleResponse(res, err, results);
         });
     });
 
-    router.get('/days', function(req, res){
-        db.getDistinctGameDays(function(err, days){
-            return helper.handleResponse(res, err, days);
+    router.get('/games-day', function(req, res){
+        db.getGamesByDay(function(err, results){
+            return helper.handleResponse(res, err, {games: results});
         });
     });
 

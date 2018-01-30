@@ -4,19 +4,19 @@
 
         <div class="row mt-4 mb-4">
             <div class="col-lg-4">
-                <h1 class="text-muted">#12</h1>
-                <p class="h3">TOTAL GAMES</p>
-                <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+                <h1 class="text-muted">#{{ totalGames }}</h1>
+                <p class="h3">Total Games</p>
+                <p></p>
             </div><!-- /.col-lg-4 -->
             <div class="col-lg-4">
-                <h1 class="text-muted">#5.4</h1>
-                <p class="h3">AVG GAMES/DAY</p>
-                <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+                <h1 class="text-muted">#{{ avgGamesDay }}</h1>
+                <p class="h3">Avg. Games p/ Day</p>
+                <p></p>
             </div><!-- /.col-lg-4 -->
             <div class="col-lg-4">
-                <h1 class="text-muted">#12</h1>
-                <p class="h3">TOTAL GAMES</p>
-                <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+                <h1 class="text-muted">#{{ gamesDay }}</h1>
+                <p class="h3">Games p/ Day</p>
+                <p></p>
             </div><!-- /.col-lg-4 -->
         </div><!-- /.row -->
 
@@ -24,146 +24,102 @@
             <h1 class="h1">Dashboard</h1>
         </div>
 
-        <canvas class="my-4" id="myChart" width="900" height="380"></canvas>
+        <line-chart :chart-data="gameDaysData" :chart-labels="days"></line-chart>
 
-        <h2>Section title</h2>
-        <div class="table-responsive">
-            <table class="table table-striped table-sm">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Header</th>
-                        <th>Header</th>
-                        <th>Header</th>
-                        <th>Header</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1,001</td>
-                        <td>Lorem</td>
-                        <td>ipsum</td>
-                        <td>dolor</td>
-                        <td>sit</td>
-                    </tr>
-                    <tr>
-                        <td>1,002</td>
-                        <td>amet</td>
-                        <td>consectetur</td>
-                        <td>adipiscing</td>
-                        <td>elit</td>
-                    </tr>
-                    <tr>
-                        <td>1,003</td>
-                        <td>Integer</td>
-                        <td>nec</td>
-                        <td>odio</td>
-                        <td>Praesent</td>
-                    </tr>
-                    <tr>
-                        <td>1,003</td>
-                        <td>libero</td>
-                        <td>Sed</td>
-                        <td>cursus</td>
-                        <td>ante</td>
-                    </tr>
-                    <tr>
-                        <td>1,004</td>
-                        <td>dapibus</td>
-                        <td>diam</td>
-                        <td>Sed</td>
-                        <td>nisi</td>
-                    </tr>
-                    <tr>
-                        <td>1,005</td>
-                        <td>Nulla</td>
-                        <td>quis</td>
-                        <td>sem</td>
-                        <td>at</td>
-                    </tr>
-                    <tr>
-                        <td>1,006</td>
-                        <td>nibh</td>
-                        <td>elementum</td>
-                        <td>imperdiet</td>
-                        <td>Duis</td>
-                    </tr>
-                    <tr>
-                        <td>1,007</td>
-                        <td>sagittis</td>
-                        <td>ipsum</td>
-                        <td>Praesent</td>
-                        <td>mauris</td>
-                    </tr>
-                    <tr>
-                        <td>1,008</td>
-                        <td>Fusce</td>
-                        <td>nec</td>
-                        <td>tellus</td>
-                        <td>sed</td>
-                    </tr>
-                    <tr>
-                        <td>1,009</td>
-                        <td>augue</td>
-                        <td>semper</td>
-                        <td>porta</td>
-                        <td>Mauris</td>
-                    </tr>
-                    <tr>
-                        <td>1,010</td>
-                        <td>massa</td>
-                        <td>Vestibulum</td>
-                        <td>lacinia</td>
-                        <td>arcu</td>
-                    </tr>
-                    <tr>
-                        <td>1,011</td>
-                        <td>eget</td>
-                        <td>nulla</td>
-                        <td>Class</td>
-                        <td>aptent</td>
-                    </tr>
-                    <tr>
-                        <td>1,012</td>
-                        <td>taciti</td>
-                        <td>sociosqu</td>
-                        <td>ad</td>
-                        <td>litora</td>
-                    </tr>
-                    <tr>
-                        <td>1,013</td>
-                        <td>torquent</td>
-                        <td>per</td>
-                        <td>conubia</td>
-                        <td>nostra</td>
-                    </tr>
-                    <tr>
-                        <td>1,014</td>
-                        <td>per</td>
-                        <td>inceptos</td>
-                        <td>himenaeos</td>
-                        <td>Curabitur</td>
-                    </tr>
-                    <tr>
-                        <td>1,015</td>
-                        <td>sodales</td>
-                        <td>ligula</td>
-                        <td>in</td>
-                        <td>libero</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+        <h2>Players' statistics</h2>
+        <datatable :data="playersStats" :columns="columns" 
+            :query="query" :total="playersStats.length"
+            :HeaderSettings="false" :Pagination="false" 
+            :tbl-class="'table table-striped'"/>
     </div>
 </template>
 
 <script>
+import axios from 'axios';
+import LineChart from './LineChart.vue';
+
 export default {
     name: 'Statistics',
-    data () {
+    data (){
         return {
-            msg: 'Statistics Page'
+            msg: 'Statistics Page',
+            days: [],
+            gameDaysData: [],
+            totalGames: 0,
+            gamesDay: 0,
+            avgGamesDay: 0,
+            playersStats: [],
+            columns: [
+                { title: 'ID', field: 'id', sortable: true },
+                { title: 'Name', field: 'name' },
+                { title: 'Username', field: 'nickname' },
+                { title: 'Total Games', field: 'total_games_played', sortable: true },
+                { title: 'Total Points', field: 'total_points', sortable: true },
+                { title: 'Wins', field: 'total_wins', sortable: true },
+                { title: 'Losses', field: 'total_losses', sortable: true }
+            ],
+            query: {}
         }
+    },
+    methods: {
+        getTotalGamesDay(){
+            axios.get('http://localhost:8080/api/stats/total-games-day').then(response =>{
+                this.gamesDay = response.data.count;
+                this.avgGamesDay = response.data.avg;
+            })
+            .catch(err =>{
+                console.log(err);
+            });
+        },
+        getGamesDay(){
+            axios.get('http://localhost:8080/api/stats/games-day').then(response =>{
+                this.days = response.data.games.map(game => game.day);
+                this.gameDaysData = response.data.games.map(game => game.countday);
+            })
+            .catch(err =>{
+                console.log(err);
+            });
+        },
+        getPlatformGames(){
+            axios.get('http://localhost:8080/api/stats/games').then(response =>{
+                this.totalGames = response.data.count;
+            })
+            .catch(err =>{
+                console.log(err);
+            });
+        },
+        getPlayersStats(){
+            axios.get('http://localhost:8080/api/stats/players-games').then(response =>{
+                this.playersStats = response.data;
+            })
+            .catch(err =>{
+                console.log(err);
+            });
+        }
+    },
+    watch: {
+        query: {
+            handler(query){
+                if(query.sort && query.order == 'desc')
+                    this.playersStats = this.playersStats.sort(function(a, b){
+                        return a[query.sort] - b[query.sort];
+                    });
+                if(query.sort && query.order == 'asc')
+                    this.playersStats = this.playersStats.sort(function(a, b){
+                        return b[query.sort] - a[query.sort];
+                    });
+            },
+            deep: true
+        }
+    },
+    components: {
+        LineChart
+    },
+    mounted(){
+        this.getGamesDay();
+        this.getTotalGamesDay();
+        this.getPlatformGames();
+        this.getPlayersStats();
     }
 }
 </script>

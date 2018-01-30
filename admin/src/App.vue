@@ -18,7 +18,7 @@
                         <router-link class="nav-link" to="/decks">Decks</router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link class="nav-link" to="/configs">Platform Configs.</router-link>
+                        <router-link class="nav-link" to="/configs">Platform Configuration</router-link>
                     </li>
                 </ul>
                 <ul class="navbar-nav">
