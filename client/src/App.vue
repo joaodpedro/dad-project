@@ -20,9 +20,12 @@
                     <li class="nav-item">
                         <router-link class="nav-link" to="/profile" v-if="loggedIn">Profile</router-link>
                     </li>
+                    
                 </ul>
                 <ul class="navbar-nav">
-                   
+                    <li class="navbar-brand"  v-if="loggedIn">
+                        {{this.$root.$data['loggedUser'].name}}
+                    </li>
                    <li class="nav-item mr-2" >
                         <router-link class="btn btn-primary" v-if="!loggedIn" to="/login">Login</router-link>
                     </li> 
