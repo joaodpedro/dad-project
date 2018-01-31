@@ -7,6 +7,7 @@ import Register from '@/components/Register'
 import Multiplayer from '@/components/Multiplayer'
 import Reset from '@/components/Reset'
 import Top5 from '@/components/Top5'
+import Profile from '@/components/Profile'
 
 Vue.use(Router)
 
@@ -37,7 +38,7 @@ export default new Router({
     {
         path: '/profile',
         name: 'profile',
-        component: Statistics,
+        component: Profile,
         beforeEnter: requireAuth
     },
     {
