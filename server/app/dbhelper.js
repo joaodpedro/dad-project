@@ -61,6 +61,14 @@ class DbHelper{
         });
     }
 
+    updateUser(user,callback){
+        connection.execute('UPDATE `users` SET name = ?,email = ?, nickname = ?WHERE id = ?;', 
+          [user.name, user.email, user.nickname , user.id], 
+          function(err, results, fields){
+            callback(err, results);
+        });
+    }
+
     resetUserPassword(token, password, callback){
         connection.execute('SELECT email, MAX(created_at) FROM `pwd_resets` WHERE token = ? AND NOW() < expires GROUP BY email;', 
         [token], 
