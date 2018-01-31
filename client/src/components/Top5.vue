@@ -94,7 +94,7 @@ export default {
     },
     methods: {
         getTop5Points(){
-            axios.get('http://localhost:8080/api/stats/top5-points').then(response =>{
+            axios.get('http://188.166.89.174/api/stats/top5-points').then(response =>{
                 this.mostPoints = response.data;
             })
             .catch(err =>{
@@ -102,7 +102,7 @@ export default {
             });
         },
         getTop5Games(){
-            axios.get('http://localhost:8080/api/stats/top5-games').then(response =>{
+            axios.get('http://188.166.89.174/api/stats/top5-games').then(response =>{
                 this.mostGames = response.data;
             })
             .catch(err =>{
@@ -110,7 +110,7 @@ export default {
             });
         },
         getTop5Avg(){
-            axios.get('http://localhost:8080/api/stats/top5-avg').then(response =>{
+            axios.get('http://188.166.89.174/api/stats/top5-avg').then(response =>{
                 this.bestAvg = response.data;
             })
             .catch(err =>{

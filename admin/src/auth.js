@@ -29,7 +29,7 @@ export default {
     },
   
     logout (cb) {
-        axios.get('http://localhost:8080/api/logout').then(response => {
+        axios.get('http://188.166.89.174/api/logout').then(response => {
             delete localStorage.user;
             if (cb) cb();
             this.onChange(false);
@@ -44,7 +44,7 @@ export default {
 }
   
 function doRequest (nickname, pass, cb) {
-    axios.post('http://localhost:8080/api/login', {username: nickname, password: pass}).then(response => {
+    axios.post('http://188.166.89.174/api/login', {username: nickname, password: pass}).then(response => {
         if(response.status == 200){
             cb({
                 authenticated: true,

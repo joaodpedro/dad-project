@@ -31,7 +31,7 @@ export default {
     },
     methods:{
         getCards(){
-            axios.get('http://localhost:8080/api/decks/' + this.$route.params.id + '/cards').then(response =>{
+            axios.get('http://188.166.89.174/api/decks/' + this.$route.params.id + '/cards').then(response =>{
                 this.cards = response.data;
             })
             .catch(err =>{

@@ -9,7 +9,7 @@
             </button>
         </div>
 
-            <form class="form" v-if=user>
+            <form class="form" v-if="user">
                 <div class="form-group row">
                     <label for="inputName" class="col-sm-3 col-form-label"><b>Name:</b></label>
                     <div class="col-sm-8">
@@ -29,26 +29,21 @@
                     </div>
                 </div>
                 
-                <div class="form-group row">
-                    <label for="inputRegisterDate" class="col-sm-3 col-form-label"><b>Registered at:</b></label>
-                    <div class="col-sm-8">
-                        <input type="text" readonly class="form-control" id="inputRegisterDate" v-model="user.created_at">
-                    </div>
-                </div>
                 <div>
                     <button type="submit" class="btn btn-success btn-block btn-md col-sm-8" @click="updateUser()">Update</button>
                 </div>
             </form>
         <br>
-        <form v-if=user>
+        
+        <form v-if="user">
                 <div class="form-group row">
                     <label for="inputpasswordOld" class="col-sm-3 col-form-label"><b>Old Password:</b></label>
                     <div class="col-sm-8">
-                        <input type="secret" class="form-control" id="inputPasswordOld"  v-model="oldPassword">
+                        <input type="secret" class="form-control" id="inputPasswordOld" placeholder="Old password" v-model="oldPassword">
                     </div>
                     <label for="inputpasswordNew" class="col-sm-3 col-form-label"><b> New Password:</b></label>
                     <div class="col-sm-8">
-                        <input type="secret" class="form-control" id="inputPasswordNew" v-model="newPassword">
+                        <input type="secret" class="form-control" id="inputPasswordNew" placeholder="New password" v-model="newPassword">
                     </div>
                 </div>
                 <button type="submit" class="btn btn-success btn-block btn-md col-sm-8" @click="updateUserPassword()">Update Password</button>
@@ -90,13 +85,11 @@ import axios from 'axios';
 export default {
     data () {
         return {
-            user: null,
+            user: {},
             alertMessage: '',
             alertType: '',
-            reasonBlocked: '',
             oldPassword: '',
             newPassword: '',
-            reasonReactivated: '',
             msg: 'Profile'
         }
     },
@@ -105,10 +98,10 @@ export default {
     },
     methods: {
         loadUser(){
-                this.user = this.$root.$data['loggedUser'];   
+            this.user = Object.assign({}, this.$root.$data['loggedUser']);   
         },
         removeUser(){
-            axios.delete('http://localhost:8080/api/users/' + this.user.id).then(response => {
+            axios.delete('http://188.166.89.174/api/users/' + this.user.id).then(response => {
                 this.alertMessage = 'User ' + this.$root.$data['loggedUser'].name + ' successfully removed';
                 this.alertType = 'alert-success';
             })
@@ -118,12 +111,8 @@ export default {
                 console.log(err);
             });
         },
-        clear(){
-            this.reasonBlocked = '';
-            this.reasonReactivated = '';
-        },
         updateUser(){
-            axios.put('http://localhost:8080/api/users/updateDetails' + this.user).then(response => {
+            axios.put('http://188.166.89.174/api/users/' + this.user).then(response => {
                  this.alertMessage = 'User ' + this.$root.$data['loggedUser'].name + ' successfully UPDATED';
                  this.alertType = 'alert-success';
             })
@@ -135,7 +124,7 @@ export default {
 
         },
         updateUserPassword(){
-            axios.put('http://localhost:8080/api/users/' + this.$root.$data['loggedUser'].id + '/password', {
+            axios.put('http://188.166.89.174/api/users/' + this.$root.$data['loggedUser'].id + '/password', {
                 old_pass: this.oldPassword,
                 new_pass: this.newPassword
             }).then(response => {
@@ -156,7 +145,5 @@ export default {
 .form-control:read-only{
     background-color: aliceblue;
 }
-
-
 </style>
 

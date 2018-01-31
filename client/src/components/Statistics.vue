@@ -84,7 +84,7 @@ export default {
     },
     methods: {
         getPlatformPlayers(){
-            axios.get('http://localhost:8080/api/stats/players').then(response =>{
+            axios.get('http://188.166.89.174/api/stats/players').then(response =>{
                 this.totalPlayers = response.data.count;
             })
             .catch(err =>{
@@ -92,7 +92,7 @@ export default {
             });
         },
         getPlatformGames(){
-            axios.get('http://localhost:8080/api/stats/games').then(response =>{
+            axios.get('http://188.166.89.174/api/stats/games').then(response =>{
                 this.totalGames = response.data.count;
             })
             .catch(err =>{
@@ -100,7 +100,7 @@ export default {
             });
         },
         getMyStats(){
-            axios.get('http://localhost:8080/api/stats/players-games/' + this.$root.$data['loggedUser'].id).then(response =>{
+            axios.get('http://188.166.89.174/api/stats/players-games/' + this.$root.$data['loggedUser'].id).then(response =>{
                 this.myTotalPoints = response.data.total_points;
                 this.myTotalGames = response.data.total_games_played;
                 this.myAvgPoints = response.data.avrg_points;

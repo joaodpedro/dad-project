@@ -41,7 +41,7 @@ export default {
             this.$socket.emit('start_this_game', {game_id: this.game.id, players: this.players});
         },
         getGamePlayers(){
-            axios.get('http://localhost:8080/api/games/' + this.game.id + '/players').then(response =>{
+            axios.get('http://188.166.89.174/api/games/' + this.game.id + '/players').then(response =>{
                 this.players = response.data;
             })
             .catch(err =>{

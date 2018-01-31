@@ -78,7 +78,7 @@ export default {
     },
     methods: {
         sendResetEmail(){
-            axios.post('http://localhost:8080/api/users/forgot', {email: this.email}).then(response =>{
+            axios.post('http://188.166.89.174/api/users/forgot', {email: this.email, admin: 0}).then(response =>{
                 console.log(response);
                 this.message = 'An email with further instructions was sent to <strong>' + this.email + '</strong>';
                 this.alertType = 'alert-success';
@@ -91,7 +91,7 @@ export default {
         },
         resetPassword(){
             if(this.password === this.confirmPassword){
-                axios.post('http://localhost:8080/api/users/reset', {
+                axios.post('http://188.166.89.174/api/users/reset', {
                     token: this.$route.params.token, 
                     password: this.password
                 }).then(response =>{

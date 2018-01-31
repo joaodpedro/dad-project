@@ -1,6 +1,6 @@
 <template>
     <div class="login">
-        <img src="http://localhost:8080/static/img/logo.png"><br/>
+        <img src="http://188.166.89.174/static/img/logo.png"><br/>
         <h1>{{ msg }}</h1>
         
         <form class="form-signin" @submit.prevent="login()">

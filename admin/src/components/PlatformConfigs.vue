@@ -92,7 +92,7 @@ export default {
         }
     },
     mounted(){
-        axios.get('http://localhost:8080/api/configs/email').then(response => {
+        axios.get('http://188.166.89.174/api/configs/email').then(response => {
             this.platformEmail = response.data.platform_email;
         }).catch(err => {
             console.log(err);
@@ -100,7 +100,7 @@ export default {
     },
     methods: {
         changePassword(){
-            axios.put('http://localhost:8080/api/users/' + this.$root.$data['loggedUser'].id + '/password', {
+            axios.put('http://188.166.89.174/api/users/' + this.$root.$data['loggedUser'].id + '/password', {
                 old_pass: this.oldPassword,
                 new_pass: this.newPassword
             }).then(response => {
@@ -114,7 +114,7 @@ export default {
             });
         },
         changeAdminEmail(){
-            axios.put('http://localhost:8080/api/users/' + this.$root.$data['loggedUser'].id + '/email', {email: this.admEmail})
+            axios.put('http://188.166.89.174/api/users/' + this.$root.$data['loggedUser'].id + '/email', {email: this.admEmail})
             .then(response => {
                 this.alertMessageEmail = 'Administrator email changed successfully!\nYou will be logged out shortly.';
                 this.alertType = 'alert-success';
@@ -126,7 +126,7 @@ export default {
             });
         },
         changePlatformEmail(){
-            axios.put('http://localhost:8080/api/configs/email', {email: this.platformEmail})
+            axios.put('http://188.166.89.174/api/configs/email', {email: this.platformEmail})
             .then(response => {
                 this.alertMessageEmail = 'Platform email changed successfully!';
                 this.alertType = 'alert-success';

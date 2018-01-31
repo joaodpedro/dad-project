@@ -186,7 +186,7 @@ export default {
     },
     methods: {
         loadUser(){
-            axios.get('http://localhost:8080/api/users/' + this.$route.params.id).then((response) => {
+            axios.get('http://188.166.89.174/api/users/' + this.$route.params.id).then((response) => {
                 this.user = response.data;
             })
             .catch((err) => {
@@ -194,7 +194,7 @@ export default {
             });
         },
         blockUser(){
-            axios.put('http://localhost:8080/api/users/' + this.user.id + '/block', {
+            axios.put('http://188.166.89.174/api/users/' + this.user.id + '/block', {
                 reason_blocked: this.reasonBlocked,
                 email: this.user.email
             }).then(response => {
@@ -212,7 +212,7 @@ export default {
             });
         },
         reactivateUser(){
-            axios.put('http://localhost:8080/api/users/' + this.user.id + '/reactivate', {
+            axios.put('http://188.166.89.174/api/users/' + this.user.id + '/reactivate', {
                 reason_reactivated: this.reasonReactivated,
                 email: this.user.email
             }).then(response => {
@@ -230,7 +230,7 @@ export default {
             });
         },
         removeUser(){
-            axios.delete('http://localhost:8080/api/users/' + this.user.id).then(response => {
+            axios.delete('http://188.166.89.174/api/users/' + this.user.id).then(response => {
                 this.alertMessage = 'User ' + this.user.name + ' successfully removed';
                 this.alertType = 'alert-success';
                 this.loadUsers();

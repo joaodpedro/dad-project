@@ -25,7 +25,7 @@
                                 <tr v-for="deck in decks" :key="deck.id">
                                     <th scope="row">{{ deck.id }}</th>
                                     <td>{{ deck.name }}</td>
-                                    <td><img :src="'http://localhost:8080/static/'+deck.hidden_face_img_path" 
+                                    <td><img :src="'http://188.166.89.174/static/'+deck.hidden_face_img_path" 
                                             alt="Back face" width="26px" height="40px"></td>
                                     <td>{{ deck.active ? 'Active': 'Inactive' }}</td>
                                     <td>{{ deck.complete ? 'Yes' : 'No' }}</td>
@@ -61,7 +61,7 @@ export default {
     },
     methods: {
         getDecks(){
-            axios.get('http://localhost:8080/api/decks').then(response =>{
+            axios.get('http://188.166.89.174/api/decks').then(response =>{
                 this.decks = response.data;
             })
             .catch(err =>{
@@ -69,7 +69,7 @@ export default {
             });
         },
         createDeck(){
-            axios.post('http://localhost:8080/api/decks', this.deck).then(response =>{
+            axios.post('http://188.166.89.174/api/decks', this.deck).then(response =>{
                 console.log(response.data);
                 this.getDecks();
             })
@@ -82,7 +82,7 @@ export default {
                 this.sendNotification('Can\'t remove the <strong>default</strong> deck', 'alert-warning');
                 return;
             }
-            axios.delete('http://localhost:8080/api/decks/' + deck.id).then(response =>{
+            axios.delete('http://188.166.89.174/api/decks/' + deck.id).then(response =>{
                 this.sendNotification('Deck \'#'+ deck.id +' ' + deck.name +'\' successfully removed!', 'alert-success');
                 this.getDecks();
             })
@@ -92,7 +92,7 @@ export default {
         },
         activate(deck){
             deck.active = 1;
-            axios.put('http://localhost:8080/api/decks/' + deck.id, deck).then(response =>{
+            axios.put('http://188.166.89.174/api/decks/' + deck.id, deck).then(response =>{
                 this.sendNotification('Deck \'#'+ deck.id +' ' + deck.name +'\' successfully activated!', 'alert-success');
                 this.getDecks();
             })
@@ -102,7 +102,7 @@ export default {
         },
         deactivate(deck){
             deck.active = 0;
-            axios.put('http://localhost:8080/api/decks/' + deck.id, deck).then(response =>{
+            axios.put('http://188.166.89.174/api/decks/' + deck.id, deck).then(response =>{
                 this.sendNotification('Deck \'#'+ deck.id +' ' + deck.name +'\' successfully deactivated!', 'alert-success');
                 this.getDecks();
             })
