@@ -61,10 +61,10 @@ class DbHelper{
         });
     }
 
-    updateUser(user,callback){
-        connection.execute('UPDATE `users` SET name = ?,email = ?, nickname = ?WHERE id = ?;', 
-          [user.name, user.email, user.nickname , user.id], 
-          function(err, results, fields){
+    updateUser(user, callback){
+        connection.execute('UPDATE `users` SET name = ?, email = ?, nickname = ? WHERE id = ?;', 
+        [user.name, user.email, user.nickname , user.id], 
+        function(err, results, fields){
             callback(err, results);
         });
     }
