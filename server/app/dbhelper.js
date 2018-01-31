@@ -176,7 +176,31 @@ class DbHelper{
       ======================================DECKS=====================================
       ================================================================================*/
     getDecks(callback){
-        connection.execute('SELECT * FROM `decks`', 
+        connection.execute('SELECT * FROM `decks`;', 
+        function(err, results, fields){
+            callback(err, results);
+        });
+    }
+
+    createDeck(deck, callback){
+        connection.execute('INSERT INTO `decks`(name, hidden_face_img_path, active, complete) VALUES(?, ?, 0, 0);', 
+        [deck.name, deck.hidden_face], 
+        function(err, results, fields){
+            callback(err, results);
+        });
+    }
+
+    updateDeck(deck, callback){
+        connection.execute('UPDATE `decks` SET name = ?, hidden_face_img_path = ?, active = ?, complete = ?, updated_at = NOW() WHERE id = ?;', 
+        [deck.name, deck.hidden_face_img_path, deck.active, deck.complete, deck.id], 
+        function(err, results, fields){
+            callback(err, results);
+        });
+    }
+
+    deleteDeck(id, callback){
+        connection.execute('DELETE FROM `decks` WHERE id = ?;', 
+        [id], 
         function(err, results, fields){
             callback(err, results);
         });

@@ -8,6 +8,7 @@ import Reset from '@/components/Reset'
 import Statistics from '@/components/Statistics'
 import PlatformConfigs from '@/components/PlatformConfigs'
 import UserProfile from '@/components/UserProfile'
+import Deck from '@/components/Deck'
 
 Vue.use(Router)
 
@@ -40,6 +41,11 @@ export default new Router({
             path: '/decks',
             name: 'decks',
             component: DecksManager,
+            beforeEnter: requireAuth
+        },
+        {
+            path: '/decks/:id',
+            component: Deck,
             beforeEnter: requireAuth
         },
         {

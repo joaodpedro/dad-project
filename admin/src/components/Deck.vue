@@ -3,53 +3,54 @@
         <h1>{{ msg }}</h1>
 
         <main role="main">
-            <!--<section class="jumbotron text-center">
-                <div class="container">
-                    <h1 class="jumbotron-heading">Album example</h1>
-                    <p class="lead text-muted">Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don't simply skip over it entirely.</p>
-                    <p>
-                        <a href="#" class="btn btn-primary my-2">Main call to action</a>
-                        <a href="#" class="btn btn-secondary my-2">Secondary action</a>
-                    </p>
-                </div>
-            </section>-->
-
-            <div class="album py-5 bg-light">
-                <div class="container">
-                    <figure class="figure">
-                        <img class="img-fluid img-thumbnail" src="http://placehold.it/150x200" alt="Card image cap">
-                        <p><button class="btn">CENAS</button></p>
-                    </figure>
-                    
-                    <div class="row">
-                        <div class="col-3 w-150 h-200">
-                            <img class="img-fluid img-thumbnail" src="http://placehold.it/150x200" alt="Card image cap">
-                        </div>
-                        <div class="col-3 w-150 h-200">
-                            <img class="img-fluid img-thumbnail" src="http://placehold.it/150x200" alt="Card image cap">
-                        </div>
-                        <div class="col-3 w-150 h-200">
-                            <img class="img-fluid img-thumbnail" src="http://placehold.it/150x200" alt="Card image cap">
-                        </div>
-                        <div class="col-3 w-150 h-200">
-                            <img class="img-fluid img-thumbnail" src="http://placehold.it/150x200" alt="Card image cap">
-                        </div>
-                        <div class="col-3 w-150 h-200">
-                            <img class="img-fluid img-thumbnail" src="http://placehold.it/150x200" alt="Card image cap">
+            <div class="container">
+                <div class="row">
+                    <div class="col-2 mb-2" v-for="card in cards" :key="card.id">
+                        <div class="card">
+                            <h3 class="card-header card-title">{{card.value}} {{suiteIcon(card.suite)}}</h3>
+                            <div class="card-body">
+                                <img class="img-fluid img-thumbnail" :src="'http://localhost:8080/static/'+card.path" alt="Card image cap">
+                            </div>
                         </div>
                     </div>
-                </div><!-- END CONTAINER DIV-->
-            </div><!-- END ALBUM DIV-->
-        </main><!-- END MAIN -->
+                </div>
+            </div>
+        </main>
     </div>
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
     data () {
         return {
-            msg: 'Deck #'
+            msg: 'Deck #'+this.$route.params.id,
+            cards: []
         }
+    },
+    methods:{
+        getCards(){
+            axios.get('http://localhost:8080/api/decks/' + this.$route.params.id + '/cards').then(response =>{
+                this.cards = response.data;
+            })
+            .catch(err =>{
+                console.log(err);
+            });
+        },
+        suiteIcon: function(suite){
+            if(suite === 'C')
+                return '♥';
+            if(suite === 'P')
+                return '♣';
+            if(suite === 'O')
+                return '♦';
+            if(suite === 'E')
+                return '♠';
+        }
+    },
+    mounted(){
+        this.getCards();
     }
 }
 </script>

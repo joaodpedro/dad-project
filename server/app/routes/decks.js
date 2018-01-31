@@ -13,5 +13,26 @@ module.exports = function(router, passport, db){
         });
     });
 
+    router.post('/', /*helper.isAdmin,*/ function(req, res){
+        db.createDeck(req.body, function(err, result){
+            var data = {
+                rows: result ? result.affectedRows : 0, 
+                id: result ? result.insertId : -1 };
+            return helper.handleResponse(res, err, data);
+        });
+    });
+
+    router.put('/:id', /*helper.isAdmin,*/ function(req, res){
+        db.updateDeck(req.body, function(err, result){
+            return helper.handleResponse(res, err, {rows: result ? result.affectedRows : 0 ,message: 'Updated'});
+        });
+    });
+
+    router.delete('/:id', /*helper.isAdmin,*/ function(req, res){
+        db.deleteDeck(req.params.id, function(err, result){
+            return helper.handleResponse(res, err, 'Deleted');
+        });
+    });
+
     return router;
 }

@@ -3,87 +3,127 @@
         <h1>{{ msg }}</h1>
 
         <main role="main">
-            <!--<section class="jumbotron text-center">
-                <div class="container">
-                    <h1 class="jumbotron-heading">Album example</h1>
-                    <p class="lead text-muted">Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don't simply skip over it entirely.</p>
-                    <p>
-                        <a href="#" class="btn btn-primary my-2">Main call to action</a>
-                        <a href="#" class="btn btn-secondary my-2">Secondary action</a>
-                    </p>
-                </div>
-            </section>-->
-
-            <div class="album py-5 bg-light">
-                <div class="container">
-                    <figure class="figure">
-                        <img class="img-fluid img-thumbnail" src="http://placehold.it/150x200" alt="Card image cap">
-                        <p><button class="btn">CENAS</button></p>
-                    </figure>
-                    
-                    <div class="row">
-                        <div class="col-3 w-150 h-200">
-                            <img class="img-fluid img-thumbnail" src="http://placehold.it/150x200" alt="Card image cap">
-                        </div>
-                        <div class="col-3 w-150 h-200">
-                            <img class="img-fluid img-thumbnail" src="http://placehold.it/150x200" alt="Card image cap">
-                        </div>
-                        <div class="col-3 w-150 h-200">
-                            <img class="img-fluid img-thumbnail" src="http://placehold.it/150x200" alt="Card image cap">
-                        </div>
-                        <div class="col-3 w-150 h-200">
-                            <img class="img-fluid img-thumbnail" src="http://placehold.it/150x200" alt="Card image cap">
-                        </div>
-                        <div class="col-3 w-150 h-200">
-                            <img class="img-fluid img-thumbnail" src="http://placehold.it/150x200" alt="Card image cap">
-                        </div>
+            <div class="container">
+                <div class="alert" :class="deckAlertType" v-html="deckAlertMessage" v-if="deckAlertMessage" role="alert"></div>
+                <div class="card">
+                    <div class="card-header">
+                        <button class="btn btn-success btn-lg float-right">Create new deck</button>
                     </div>
-                </div><!-- END CONTAINER DIV-->
-            </div><!-- END ALBUM DIV-->
-        </main><!-- END MAIN -->
+                    <div class="card-body">
+                        <table class="table table-hover table-striped">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Back Face</th>
+                                    <th scope="col">Active?</th>
+                                    <th scope="col">Complete?</th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="deck in decks" :key="deck.id">
+                                    <th scope="row">{{ deck.id }}</th>
+                                    <td>{{ deck.name }}</td>
+                                    <td><img :src="'http://localhost:8080/static/'+deck.hidden_face_img_path" 
+                                            alt="Back face" width="26px" height="40px"></td>
+                                    <td>{{ deck.active ? 'Active': 'Inactive' }}</td>
+                                    <td>{{ deck.complete ? 'Yes' : 'No' }}</td>
+                                    <td>
+                                        <button class="btn btn-success btn-sm" v-if="!deck.active" @click="activate(deck)">Set Active</button>
+                                        <button class="btn btn-warning btn-sm" v-else @click="deactivate(deck)">Set Inactive</button>
+                                        <button class="btn btn-danger btn-sm" @click="deleteDeck(deck)">Remove</button>
+                                        <button class="btn btn-info btn-sm" @click="showDeck(deck)">See deck &#8811;</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>  
+                    </div>
+                </div>
+            </div>
+        </main>
     </div>
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
     name: 'Decks',
     data () {
         return {
-            msg: 'Decks page'
+            msg: 'Decks page',
+            decks: [],
+            deck: null,
+            deckAlertMessage: '',
+            deckAlertType: ''
         }
+    },
+    methods: {
+        getDecks(){
+            axios.get('http://localhost:8080/api/decks').then(response =>{
+                this.decks = response.data;
+            })
+            .catch(err =>{
+                console.log(err);
+            });
+        },
+        createDeck(){
+            axios.post('http://localhost:8080/api/decks', this.deck).then(response =>{
+                console.log(response.data);
+                this.getDecks();
+            })
+            .catch(err =>{
+                console.log(err);
+            });
+        },
+        deleteDeck(deck){
+            if(deck.id === 1){
+                this.sendNotification('Can\'t remove the <strong>default</strong> deck', 'alert-warning');
+                return;
+            }
+            axios.delete('http://localhost:8080/api/decks/' + deck.id).then(response =>{
+                this.sendNotification('Deck \'#'+ deck.id +' ' + deck.name +'\' successfully removed!', 'alert-success');
+                this.getDecks();
+            })
+            .catch(err =>{
+                console.log(err);
+            });
+        },
+        activate(deck){
+            deck.active = 1;
+            axios.put('http://localhost:8080/api/decks/' + deck.id, deck).then(response =>{
+                this.sendNotification('Deck \'#'+ deck.id +' ' + deck.name +'\' successfully activated!', 'alert-success');
+                this.getDecks();
+            })
+            .catch(err =>{
+                console.log(err);
+            });
+        },
+        deactivate(deck){
+            deck.active = 0;
+            axios.put('http://localhost:8080/api/decks/' + deck.id, deck).then(response =>{
+                this.sendNotification('Deck \'#'+ deck.id +' ' + deck.name +'\' successfully deactivated!', 'alert-success');
+                this.getDecks();
+            })
+            .catch(err =>{
+                console.log(err);
+            });
+        },
+        showDeck(deck){
+            this.$router.push('/decks/' + deck.id);
+        },
+        sendNotification(message, alertType){
+            this.deckAlertMessage = message;
+            this.deckAlertType = alertType;
+            setTimeout(() =>{ this.deckAlertMessage = ''; this.deckAlertType = ''; }, 3000);
+        }
+    },
+    mounted(){
+        this.getDecks();
     }
 }
 </script>
 
-<style scoped>
-:root {
-  --jumbotron-padding-y: 3rem;
-}
-
-.jumbotron {
-  padding-top: var(--jumbotron-padding-y);
-  padding-bottom: var(--jumbotron-padding-y);
-  margin-bottom: 0;
-  background-color: #fff;
-}
-@media (min-width: 768px) {
-  .jumbotron {
-    padding-top: calc(var(--jumbotron-padding-y) * 2);
-    padding-bottom: calc(var(--jumbotron-padding-y) * 2);
-  }
-}
-
-.jumbotron p:last-child {
-  margin-bottom: 0;
-}
-
-.jumbotron-heading {
-  font-weight: 300;
-}
-
-.jumbotron .container {
-  max-width: 40rem;
-}
-
-.box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); }
+<style>
 </style>
