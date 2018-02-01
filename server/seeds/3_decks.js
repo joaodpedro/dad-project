@@ -16,8 +16,8 @@ exports.seed = function(knex, Promise) {
         let records = [];
         let decks = [
             { name: 'Default deck', active: true, complete: true},
-            { name: 'Baralho incomplete', active: false, complete: false},
-            { name: 'Baralho shiny', active: true, complete: true}
+            { name: 'Baralho incomplete', active: true, complete: true},
+            { name: 'Baralho shiny', active: false, complete: false}
         ];
 
         for(let deck of decks){
