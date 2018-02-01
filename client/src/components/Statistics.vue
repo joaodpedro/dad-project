@@ -77,14 +77,14 @@ export default {
             myTotalGames: 0,
             myTotalWins: 0,
             myTotalLosses: 0,
-            myTotalDraws: 0,
+            myTotalDraws: 0.0,
             myTotalPoints: 0,
             myAvgPoints: 0
         }
     },
     methods: {
         getPlatformPlayers(){
-            axios.get('http://188.166.89.174/api/stats/players').then(response =>{
+            axios.get('http://localhost:8080/api/stats/players').then(response =>{
                 this.totalPlayers = response.data.count;
             })
             .catch(err =>{
@@ -92,7 +92,7 @@ export default {
             });
         },
         getPlatformGames(){
-            axios.get('http://188.166.89.174/api/stats/games').then(response =>{
+            axios.get('http://localhost:8080/api/stats/games').then(response =>{
                 this.totalGames = response.data.count;
             })
             .catch(err =>{
@@ -100,10 +100,10 @@ export default {
             });
         },
         getMyStats(){
-            axios.get('http://188.166.89.174/api/stats/players-games/' + this.$root.$data['loggedUser'].id).then(response =>{
+            axios.get('http://localhost:8080/api/stats/players-games/' + this.$root.$data['loggedUser'].id).then(response =>{
                 this.myTotalPoints = response.data.total_points;
                 this.myTotalGames = response.data.total_games_played;
-                this.myAvgPoints = response.data.avrg_points;
+                this.myAvgPoints = response.data.avrg_points || 0.0;
                 this.myTotalWins = response.data.total_wins;
                 this.myTotalDraws = response.data.total_draws || 'NaN';
                 this.myTotalLosses = response.data.total_losses;

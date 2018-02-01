@@ -7,7 +7,7 @@ module.exports = function(router, passport, db){
         });
     });
 
-    router.put('/email', /*helper.isLoggedIn,*/ function(req, res){
+    router.put('/email', /*helper.isAdmin,*/ function(req, res){
         db.updatePlatformEmail(req.body.email, function(err, result){
             return helper.handleResponse(res, err, {rows: result.affectedRows, message:'Platform email changed'});
         });

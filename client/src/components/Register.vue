@@ -1,6 +1,6 @@
 <template>
     <div class="Register">
-        <img src="http://188.166.89.174/static/img/logo.png"><br/>
+        <img src="http://localhost:8080/static/img/logo.png"><br/>
 
         <form @submit.prevent="register()" class="row justify-content-center">
             <div class="col-5">
@@ -68,7 +68,7 @@ export default {
     },
     methods: {
         register(){
-            axios.post('http://188.166.89.174/api/register', this.user).then(respose=> {
+            axios.post('http://localhost:8080/api/register', this.user).then(respose=> {
                 this.successMessage='User successfully registered'
                 this.errorMessage='';
             }).catch(err=>{

@@ -2,12 +2,7 @@
     <div class="users">
         <h1>{{ msg }}</h1>
 
-        <div v-if="alertMessage" class="alert" :class="alertType" role="alert">
-            {{ alertMessage }}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
+        <div class="alert" :class="usersAlertType" v-html="usersAlertMessage" v-if="usersAlertMessage" role="alert"></div>
 
         <table class="table table-hover table-striped">
             <thead class="thead-dark">
@@ -129,8 +124,8 @@ export default {
         return {
             users: [],
             currentUser: null,
-            alertMessage: '',
-            alertType: '',
+            usersAlertMessage: '',
+            usersAlertType: '',
             reasonBlocked: '',
             reasonReactivated: '',
             msg: 'Users page'
@@ -141,7 +136,7 @@ export default {
     },
     methods: {
         loadUsers(){
-            axios.get('http://188.166.89.174/api/users').then((response) => {
+            axios.get('http://localhost:8080/api/users').then((response) => {
                 this.users = response.data;
             })
             .catch((err) => {
@@ -149,55 +144,54 @@ export default {
             });
         },
         blockUser(){
-            axios.put('http://188.166.89.174/api/users/' + this.currentUser.id + '/block', {
+            axios.put('http://localhost:8080/api/users/' + this.currentUser.id + '/block', {
                 reason_blocked: this.reasonBlocked,
                 email: this.currentUser.email
             }).then(response => {
                 this.currentUser.blocked = 1;
-                this.alertMessage = 'User ' + this.currentUser.name + ' successfully blocked';
-                this.alertType = 'alert-success';
+                this.sendNotification('User ' + this.currentUser.name + ' successfully blocked', 'alert-success');
                 this.clearCurrentUser();
             })
             .catch(err => {
-                this.alertMessage = 'Could not block user ' + this.currentUser.name + '\'s account';
-                this.alertType = 'alert-danger';
+                this.sendNotification('Could not block user ' + this.currentUser.name + '\'s account', 'alert-danger');
                 console.log(err);
                 this.clearCurrentUser();
             });
         },
         reactivateUser(){
-            axios.put('http://188.166.89.174/api/users/' + this.currentUser.id + '/reactivate', {
+            axios.put('http://localhost:8080/api/users/' + this.currentUser.id + '/reactivate', {
                 reason_reactivated: this.reasonReactivated,
                 email: this.currentUser.email
             }).then(response => {
                 this.currentUser.blocked = 0;
-                this.alertMessage = 'User ' + this.currentUser.name + ' successfully reactivated';
-                this.alertType = 'alert-success';
+                this.sendNotification('User ' + this.currentUser.name + ' successfully reactivated', 'alert-success');
                 this.clearCurrentUser();
             })
             .catch(err => {
-                this.alertMessage = 'Could not reactivate user ' + this.currentUser.name + '\'s account';
-                this.alertType = 'alert-danger';
+                this.sendNotification('Could not reactivate user ' + this.currentUser.name + '\'s account', 'alert-danger');
                 console.log(err);
                 this.clearCurrentUser();
             });
         },
         removeUser(){
-            axios.delete('http://188.166.89.174/api/users/' + this.currentUser.id).then(response => {
-                this.alertMessage = 'User ' + this.currentUser.name + ' successfully removed';
-                this.alertType = 'alert-success';
-                this.currentUser = null;
+            axios.delete('http://localhost:8080/api/users/' + this.currentUser.id).then(response => {
+                this.sendNotification('User ' + this.currentUser.name + ' successfully removed', 'alert-success');
+                this.clearCurrentUser();
                 this.loadUsers();
             })
             .catch(err => {
-                this.alertMessage = 'Could not remove user ' + this.currentUser.name + '\'s account';
-                this.alertType = 'alert-danger';
+                this.sendNotification('Could not remove user ' + this.currentUser.name + '\'s account', 'alert-danger');
                 console.log(err);
-                this.currentUser = null;
+                this.clearCurrentUser();
             });
         },
         selectCurrentUser(user){
             this.currentUser = user;
+        },
+        sendNotification(message, alertType){
+            this.usersAlertMessage = message;
+            this.usersAlertType = alertType;
+            setTimeout(() =>{ this.usersAlertMessage = ''; this.usersAlertType = ''; }, 3000);
         },
         clearCurrentUser(){
             this.currentUser = null;

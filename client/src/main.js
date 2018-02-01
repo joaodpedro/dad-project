@@ -9,7 +9,7 @@ import Datatable from 'vue2-datatable-component'
 Vue.config.productionTip = false
 
 Vue.use(Datatable)
-Vue.use(VueSocketio, 'http://188.166.89.174');
+Vue.use(VueSocketio, 'http://localhost:8080');
 
 /* eslint-disable no-new */
 new Vue({

@@ -23,8 +23,8 @@ export default {
             lobbyGames: [],
             activeGames: [],
             socketId: "",
-            message: '',
-            alertType: ''
+            multiAlertMessage: '',
+            multiAlertType: ''
         }
     },
     methods: {
@@ -44,9 +44,9 @@ export default {
             this.$socket.emit('get_my_active_games', this.$root.$data['loggedUser'].id);
         },
         sendNotification(message, alertType){
-            this.message = message;
-            this.alertType = alertType;
-            setTimeout(() =>{ this.message = ''; this.alertType = ''; }, 3000);
+            this.multiAlertMessage = message;
+            this.multiAlertType = alertType;
+            setTimeout(() =>{ this.multiAlertMessage = ''; this.multiAlertType = ''; }, 3000);
         }
     },
     sockets: {

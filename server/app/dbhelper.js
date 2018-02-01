@@ -63,7 +63,7 @@ class DbHelper{
 
     updateUser(user, callback){
         connection.execute('UPDATE `users` SET name = ?, email = ?, nickname = ? WHERE id = ?;', 
-        [user.name, user.email, user.nickname , user.id], 
+        [user.name, user.email, user.nickname, user.id], 
         function(err, results, fields){
             callback(err, results);
         });
@@ -265,14 +265,14 @@ class DbHelper{
       ================================================================================*/
     //NUMBER GAMES BY DAY && AVG BY DAY
     getTotalGamesDay(callback){
-        connection.execute('SELECT COUNT(*) AS count, COUNT(*)/COUNT(DISTINCT created_at) AS avg, created_at FROM `games` GROUP BY created_at', //WHERE status = "Finished"
+        connection.execute('SELECT COUNT(*) AS count, COUNT(*)/COUNT(DISTINCT created_at) AS avg, created_at FROM `games` GROUP BY created_at WHERE status = "Finished";',
         function(err, results, fields){
             callback(err, results[0]);
         });
     }
 
     getGamesByDay(callback){
-        connection.execute('SELECT COUNT(*) as countday, DATE_FORMAT(created_at,"%d/%m/%Y") AS day FROM `games` GROUP BY created_at', 
+        connection.execute('SELECT COUNT(*) as countday, DATE_FORMAT(created_at,"%d/%m/%Y") AS day FROM `games` GROUP BY created_at WHERE status = "Finished";', 
         function(err, results, fields){
             callback(err, results);
         });
@@ -280,7 +280,7 @@ class DbHelper{
 
     //TOTAL GAMES
     getTotalGames(callback){
-        connection.execute('SELECT COUNT(*) AS count FROM `games`;', //WHERE status = "Finished" 
+        connection.execute('SELECT COUNT(*) AS count FROM `games` WHERE status = "Finished";', 
         function(err, results, fields){
             callback(err, results[0]);
         });
@@ -288,7 +288,7 @@ class DbHelper{
 
     //TOTAL PLAYERS PLATFORM
     getTotalPlayers(callback){
-        connection.execute('SELECT COUNT(*) AS count FROM `users`;', 
+        connection.execute('SELECT COUNT(*) AS count FROM `users` WHERE admin = 0;', 
         function(err, results, fields){
             callback(err, results[0]);
         });
@@ -296,7 +296,7 @@ class DbHelper{
 
     //TOP 5 MOST GAMES
     getTop5MostGames(callback){
-        connection.execute('SELECT id, name, nickname, total_games_played FROM `users` ORDER BY total_games_played DESC LIMIT 5;', 
+        connection.execute('SELECT id, name, nickname, total_games_played FROM `users` WHERE admin = 0 ORDER BY total_games_played DESC LIMIT 5;', 
         function(err, results, fields){
             callback(err, results);
         });
@@ -304,7 +304,7 @@ class DbHelper{
 
     //TOP 5 MOST POINTS
     getTop5MostPoints(callback){
-        connection.execute('SELECT id, name, nickname, total_points FROM `users` ORDER BY total_points DESC LIMIT 5;', 
+        connection.execute('SELECT id, name, nickname, total_points FROM `users` WHERE id = 0 ORDER BY total_points DESC LIMIT 5;', 
         function(err, results, fields){
             callback(err, results);
         });
@@ -312,7 +312,7 @@ class DbHelper{
 
     //TOP 5 BEST AVERAGE
     getTop5BestPointAverage(callback){
-        connection.execute('SELECT id, name, nickname, (total_points/total_games_played) AS avrg FROM `users` ORDER BY avrg DESC LIMIT 5;', 
+        connection.execute('SELECT id, name, nickname, (total_points/total_games_played) AS avrg FROM `users` WHERE admin = 0 ORDER BY avrg DESC LIMIT 5;', 
         function(err, results, fields){
             callback(err, results);
         });
@@ -322,7 +322,7 @@ class DbHelper{
     getAllPlayersGameStats(callback){
         connection.execute('SELECT id, nickname, name, total_games_played, total_points, (total_points/total_games_played) AS avrg_points, '+
             '(SELECT COUNT(*) FROM `game_user` WHERE winner = 1) AS total_wins, '+
-            '(SELECT COUNT(*) FROM `game_user` WHERE winner = 0) AS total_losses FROM `users`;', 
+            '(SELECT COUNT(*) FROM `game_user` WHERE winner = 0) AS total_losses FROM `users` WHERE admin = 0;', 
         function(err, results, fields){
             callback(err, results);
         });
@@ -332,7 +332,7 @@ class DbHelper{
     getPlayerGameStats(id, callback){
         connection.execute('SELECT total_games_played, total_points, (total_points/total_games_played) AS avrg_points, '+
             '(SELECT COUNT(*) FROM `game_user` WHERE user_id = ? AND winner = 1) AS total_wins, '+
-            '(SELECT COUNT(*) FROM `game_user` WHERE user_id = ? AND winner = 0) AS total_losses FROM `users` WHERE id = ?;', 
+            '(SELECT COUNT(*) FROM `game_user` WHERE user_id = ? AND winner = 0) AS total_losses FROM `users` WHERE id = ? AND admin = 0;', 
         [id, id, id],
         function(err, results, fields){
             callback(err, results[0]);

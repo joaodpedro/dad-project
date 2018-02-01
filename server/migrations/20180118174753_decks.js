@@ -3,8 +3,8 @@ exports.up = function(knex, Promise) {
         table.increments('id').unsigned()
         table.string('name').notNullable()
         table.string('hidden_face_img_path')
-        table.boolean('active')
-        table.boolean('complete')
+        table.boolean('active').defaultTo(false)
+        table.boolean('complete').defaultTo(false)
         table.timestamps(true, true)
     });
 };

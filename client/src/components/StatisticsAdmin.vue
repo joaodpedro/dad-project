@@ -63,7 +63,7 @@ export default {
     },
     methods: {
         getTotalGamesDay(){
-            axios.get('http://188.166.89.174/api/stats/total-games-day').then(response =>{
+            axios.get('http://localhost:8080/api/stats/total-games-day').then(response =>{
                 this.gamesDay = response.data.count;
                 this.avgGamesDay = response.data.avg;
             })
@@ -72,7 +72,7 @@ export default {
             });
         },
         getGamesDay(){
-            axios.get('http://188.166.89.174/api/stats/games-day').then(response =>{
+            axios.get('http://localhost:8080/api/stats/games-day').then(response =>{
                 this.days = response.data.games.map(game => game.day);
                 this.gameDaysData = response.data.games.map(game => game.countday);
             })
@@ -81,7 +81,7 @@ export default {
             });
         },
         getPlatformGames(){
-            axios.get('http://188.166.89.174/api/stats/games').then(response =>{
+            axios.get('http://localhost:8080/api/stats/games').then(response =>{
                 this.totalGames = response.data.count;
             })
             .catch(err =>{
@@ -89,7 +89,7 @@ export default {
             });
         },
         getPlayersStats(){
-            axios.get('http://188.166.89.174/api/stats/players-games').then(response =>{
+            axios.get('http://localhost:8080/api/stats/players-games').then(response =>{
                 this.playersStats = response.data;
             })
             .catch(err =>{

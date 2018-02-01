@@ -4,7 +4,7 @@
 
         <div class="row justify-content-center mb-5">
             <div class="col-8">
-                <h4 class="text-left">Top 5 PLayer w/ Most Points</h4><hr/>
+                <h4 class="text-left">Top 5 Player w/ Most Points</h4><hr/>
 
                 <table class="table table-hover">
                     <thead class="thead-light">
@@ -29,7 +29,7 @@
 
         <div class="row justify-content-center mt-5 mb-5">
             <div class="col-8">
-                <h4 class="text-left">Top 5 PLayer w/ Most Games</h4><hr/>
+                <h4 class="text-left">Top 5 Player w/ Most Games</h4><hr/>
 
                 <table class="table table-hover">
                     <thead class="thead-light">
@@ -54,7 +54,7 @@
 
         <div class="row justify-content-center mt-5">
             <div class="col-8">
-                <h4 class="text-left">Top 5 PLayer w/ Best Average</h4><hr/>
+                <h4 class="text-left">Top 5 Player w/ Best Average</h4><hr/>
 
                 <table class="table table-hover">
                     <thead class="thead-light">
@@ -94,7 +94,7 @@ export default {
     },
     methods: {
         getTop5Points(){
-            axios.get('http://188.166.89.174/api/stats/top5-points').then(response =>{
+            axios.get('http://localhost:8080/api/stats/top5-points').then(response =>{
                 this.mostPoints = response.data;
             })
             .catch(err =>{
@@ -102,7 +102,7 @@ export default {
             });
         },
         getTop5Games(){
-            axios.get('http://188.166.89.174/api/stats/top5-games').then(response =>{
+            axios.get('http://localhost:8080/api/stats/top5-games').then(response =>{
                 this.mostGames = response.data;
             })
             .catch(err =>{
@@ -110,7 +110,7 @@ export default {
             });
         },
         getTop5Avg(){
-            axios.get('http://188.166.89.174/api/stats/top5-avg').then(response =>{
+            axios.get('http://localhost:8080/api/stats/top5-avg').then(response =>{
                 this.bestAvg = response.data;
             })
             .catch(err =>{

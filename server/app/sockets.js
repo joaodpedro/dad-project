@@ -71,8 +71,6 @@ module.exports = function(server, db){
                 });
             });
         });
-
-
     });
     
     return io;

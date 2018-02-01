@@ -4,8 +4,7 @@
             <form @submit.prevent="sendResetEmail()">
                 <h1 class="mb-3 font-weight-normal">Forgot password</h1>
                 
-                <div v-if="message" class="alert" :class="alertType" role="alert" v-html="message">
-                </div>
+                <div class="alert" :class="forgotAlertType" v-html="forgotAlertMessage" v-if="forgotAlertMessage" role="alert"></div>
 
                 <div class="form-group row">
                     <label for="inputEmail" class="col-sm-2 col-form-label">Email:</label>
@@ -28,8 +27,7 @@
             <form @submit.prevent="resetPassword()">
                 <h1 class="mb-3 font-weight-normal">Reset password</h1>
                 
-                <div v-if="message" class="alert" :class="alertType" role="alert" v-html="message">
-                </div>
+                <div class="alert" :class="forgotAlertType" v-html="forgotAlertMessage" v-if="forgotAlertMessage" role="alert"></div>
 
                 <div class="form-group row">
                     <label for="inputPassword" class="col-sm-2 col-form-label">Password:</label>
@@ -65,12 +63,12 @@ export default {
     data () {
         return {
             msg: 'Forgot/Reset page',
-            message: '',
             email: '',
             password: '',
             confirmPassword: '',
             showQuery: '',
-            alertType: ''
+            forgotAlertMessage: '',
+            forgotAlertType: ''
         }
     },
     mounted(){
@@ -78,36 +76,37 @@ export default {
     },
     methods: {
         sendResetEmail(){
-            axios.post('http://188.166.89.174/api/users/forgot', {email: this.email, admin: 0}).then(response =>{
+            axios.post('http://localhost:8080/api/users/forgot', {email: this.email}).then(response =>{
                 console.log(response);
-                this.message = 'An email with further instructions was sent to <strong>' + this.email + '</strong>';
-                this.alertType = 'alert-success';
+                this.sendNotification('An email with further instructions was sent to <strong>' + this.email + '</strong>', 'alert-success');
             })
             .catch(err =>{
                 console.log(err);
-                this.message = err.response.data.message;
-                this.alertType = 'alert-danger';
+                this.sendNotification(err.response.data.message, 'alert-danger');
             });
         },
         resetPassword(){
-            if(this.password === this.confirmPassword){
-                axios.post('http://188.166.89.174/api/users/reset', {
-                    token: this.$route.params.token, 
-                    password: this.password
-                }).then(response =>{
-                    this.message = 'Password reset successful! You will be <strong>redirected</strong> to the login page.';
-                    this.alertType = 'alert-success';
-                    setTimeout(() =>{ this.$router.replace('/login'); }, 2000);
-                })
-                .catch(err =>{
-                    console.log(err);
-                    this.message = err.response.data.message;
-                    this.alertType = 'alert-danger';
-                });
-            }else{
-                this.message = 'Passwords don\'t match!';
-                this.alertType = 'alert-danger';
+            if(!this.password === this.confirmPassword){
+                this.sendNotification('Passwords don\'t match!', 'alert-danger');
+                return; 
             }
+
+            axios.post('http://localhost:8080/api/users/reset', {
+                token: this.$route.params.token, 
+                password: this.password
+            }).then(response =>{
+                this.sendNotification('Password reset successful! You will be <strong>redirected</strong> to the login page.', 'alert-success');
+                setTimeout(() =>{ this.$router.replace('/login'); }, 2000);
+            })
+            .catch(err =>{
+                console.log(err);
+                this.sendNotification(err.response.data.message, 'alert-danger');
+            });
+        },
+        sendNotification(message, alertType){
+            this.forgotAlertMessage = message;
+            this.forgotAlertType = alertType;
+            setTimeout(() =>{ this.forgotAlertMessage = ''; this.forgotAlertType = ''; }, 3000);
         }
     }
 }

@@ -6,8 +6,8 @@
                 <button class="btn btn-success btn-lg float-right"  v-on:click.prevent="create()">Create New Game</button>
             </div>
             <div class="col-12 mt-2">
-                <div class="alert" :class="this.$parent.alertType" v-if="this.$parent.message" 
-                    v-html="this.$parent.message" role="alert" ></div>
+                <div class="alert" :class="this.$parent.multiAlertType" v-if="this.$parent.multiAlertMessage" 
+                    v-html="this.$parent.multiAlertMessage" role="alert" ></div>
             </div>
         </div>
 
@@ -47,11 +47,11 @@ export default {
     },		
     methods: {
         join(game) {
-            if(!this.$parent.activeGames.some(g => g.id === game.id)){
-                this.$emit('join-click', game);
-            }else{
-                this.$parent.sendNotification('You have already joined this game!<br/>Wait for the creator to start it', 'alert-warning')
+            if(this.$parent.activeGames.some(g => g.id === game.id)){
+                this.$parent.sendNotification('You have already joined this game!<br/>Wait for the creator to start it', 'alert-warning');
+                return;
             }
+            this.$emit('join-click', game);
         },	
         create() {
            	this.$emit('create-click');

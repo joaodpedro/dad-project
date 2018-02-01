@@ -2,13 +2,13 @@
 var helper = require('../route-security-helper');
 
 module.exports = function(router, passport, db){
-    router.get('/', function(req, res){
+    router.get('/', /*helper.isLoggedIn,*/ function(req, res){
         db.getLobbyGames(function(err, games){
             return helper.handleResponse(res, err, games);
         });
     });
 
-    router.post('/', function(req, res){
+    router.post('/', /*helper.isLoggedIn,*/ function(req, res){
         db.createGame(req.body,function(err, result){
             var data = {
                 rows: result ? result.affectedRows : 0, 

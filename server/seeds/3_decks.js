@@ -1,15 +1,29 @@
+
+let createRecord = function(knex, deck){
+    return knex('decks').insert({
+        name: deck.name, 
+        hidden_face_img_path: 'img/decks/default/semFace.png',
+        active: deck.active, 
+        complete: deck.complete
+    });
+}
+
 exports.seed = function(knex, Promise) {
   // Deletes ALL existing entries
   return knex('decks').del()
     .then(function () {
         // Inserts seed entries
-        knex('config').where({id: 1}).first().then(function(row){
-            return knex('decks').insert({
-                name: 'Default deck',
-                hidden_face_img_path: row.img_base_path + 'default/semFace.png',
-                active: true,
-                complete: true
-            });
-        });
+        let records = [];
+        let decks = [
+            { name: 'Default deck', active: true, complete: true},
+            { name: 'Baralho incomplete', active: false, complete: false},
+            { name: 'Baralho shiny', active: true, complete: true}
+        ];
+
+        for(let deck of decks){
+            records.push(createRecord(knex, deck));
+        }
+
+        return Promise.all(records);
     });
 };

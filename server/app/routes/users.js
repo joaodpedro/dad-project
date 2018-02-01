@@ -73,7 +73,7 @@ module.exports = function(router, passport, db){
     });
 
 
-    router.put('/:id', /*helper.isAdmin,*/ function(req, res){
+    router.put('/:id', /*helper.isLoggedIn,*/ function(req, res){
         db.updateUser(req.body, function(err, result){
             return helper.handleResponse(res, err, 'Updated');
         });

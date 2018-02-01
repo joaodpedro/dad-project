@@ -7,7 +7,7 @@ module.exports = function(router, passport, db){
         });
     });
 
-    router.get('/:id/cards', /*helper.isAdmin,*/ function(req, res){
+    router.get('/:id/cards', /*helper.isLoggedIn,*/ function(req, res){
         db.getCards(req.params.id, function(err, cards){
             return helper.handleResponse(res, err, cards);
         });

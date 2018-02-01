@@ -12,9 +12,7 @@
                 
                 <h4 class="text-left">Change administrator password</h4><hr/>
 
-                <div class="alert" :class="alertType" role="alert" v-if="alertMessagePass">
-                    {{ alertMessagePass }}
-                </div>
+                <div class="alert" :class="configAlertType" v-html="configAlertMessage" role="alert" v-if="configAlertMessage"></div>
                 
                 <form @submit.prevent="changePassword()">
                     <div class="form-row">
@@ -37,10 +35,6 @@
         <div class="row justify-content-center mt-5 mb-5">
             <div class="col-7">
                 <h4 class="text-left">Change emails</h4><hr/>
-                
-                <div class="alert" :class="alertType" role="alert" v-if="alertMessageEmail">
-                    {{ alertMessageEmail }}
-                </div>
                 
                 <form class="text-left mb-4" @submit.prevent="changeAdminEmail()">
                     <div class="form-group">
@@ -86,13 +80,12 @@ export default {
             platformEmail: '',
             oldPassword: '',
             newPassword: '',
-            alertMessagePass: '',
-            alertMessageEmail: '',
-            alertType: ''
+            configAlertMessage: '',
+            configAlertType: ''
         }
     },
     mounted(){
-        axios.get('http://188.166.89.174/api/configs/email').then(response => {
+        axios.get('http://localhost:8080/api/configs/email').then(response => {
             this.platformEmail = response.data.platform_email;
         }).catch(err => {
             console.log(err);
@@ -100,44 +93,43 @@ export default {
     },
     methods: {
         changePassword(){
-            axios.put('http://188.166.89.174/api/users/' + this.$root.$data['loggedUser'].id + '/password', {
+            axios.put('http://localhost:8080/api/users/' + this.$root.$data['loggedUser'].id + '/password', {
                 old_pass: this.oldPassword,
                 new_pass: this.newPassword
             }).then(response => {
-                this.alertMessagePass = 'Password changed successfully!\nYou will be logged out shortly.';
-                this.alertType = 'alert-success';
+                this.sendNotification('Password changed successfully!<br/>You will be logged out shortly.', 'alert-success');
                 this.prepareLogout();
             }).catch(err => {
-                this.alertMessagePass = err.response.data.message;
-                this.alertType = 'alert-danger';
+                this.sendNotification(err.response.data.message, 'alert-danger');
                 console.log(err);
             });
         },
         changeAdminEmail(){
-            axios.put('http://188.166.89.174/api/users/' + this.$root.$data['loggedUser'].id + '/email', {email: this.admEmail})
+            axios.put('http://localhost:8080/api/users/' + this.$root.$data['loggedUser'].id + '/email', {email: this.admEmail})
             .then(response => {
-                this.alertMessageEmail = 'Administrator email changed successfully!\nYou will be logged out shortly.';
-                this.alertType = 'alert-success';
+                this.sendNotification('Administrator email changed successfully!<br/>You will be logged out shortly.', 'alert-success');
                 this.prepareLogout();
             }).catch(err => {
-                this.alertMessageEmail = err.response.data.message;
-                this.alertType = 'alert-danger';
+                this.sendNotification(err.response.data.message, 'alert-danger');
                 console.log(err);
             });
         },
         changePlatformEmail(){
-            axios.put('http://188.166.89.174/api/configs/email', {email: this.platformEmail})
+            axios.put('http://localhost:8080/api/configs/email', {email: this.platformEmail})
             .then(response => {
-                this.alertMessageEmail = 'Platform email changed successfully!';
-                this.alertType = 'alert-success';
+                this.sendNotification('Platform email changed successfully!', 'alert-success');
             }).catch(err => {
-                this.alertMessageEmail = err.response.data.message;
-                this.alertType = 'alert-danger';
+                this.sendNotification(err.response.data.message, 'alert-danger');
                 console.log(err);
             });
         },
         prepareLogout(){
             setTimeout(()=>{ this.$router.replace('/logout') }, 2000);
+        },
+        sendNotification(message, alertType){
+            this.configAlertMessage = message;
+            this.configAlertType = alertType;
+            setTimeout(() =>{ this.configAlertMessage = ''; this.configAlertType = ''; }, 3000);
         }
     }
 }

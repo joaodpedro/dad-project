@@ -1,13 +1,13 @@
 var helper = require('../route-security-helper');
 
 module.exports = function(router, passport, db){
-    router.get('/total-games-day', function(req, res){
+    router.get('/total-games-day', /*helper.isAdmin,*/ function(req, res){
         db.getTotalGamesDay(function(err, results){
             return helper.handleResponse(res, err, results);
         });
     });
 
-    router.get('/games-day', function(req, res){
+    router.get('/games-day', /*helper.isAdmin,*/ function(req, res){
         db.getGamesByDay(function(err, results){
             return helper.handleResponse(res, err, {games: results});
         });
@@ -43,13 +43,13 @@ module.exports = function(router, passport, db){
         });
     });
 
-    router.get('/players-games', function(req, res){
+    router.get('/players-games', /*helper.isAdmin,*/ function(req, res){
         db.getAllPlayersGameStats(function(err, results){
             return helper.handleResponse(res, err, results);
         });
     });
 
-    router.get('/players-games/:id', function(req, res){
+    router.get('/players-games/:id', /*helper.isLoggedIn,*/ function(req, res){
         db.getPlayerGameStats(req.params.id, function(err, results){
             return helper.handleResponse(res, err, results);
         });
