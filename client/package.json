@@ -11,9 +11,12 @@
   },
   "dependencies": {
     "axios": "^0.17.1",
+    "chart.js": "^2.7.1",
     "vue": "^2.5.2",
+    "vue-chartjs": "^3.1.0",
     "vue-router": "^3.0.1",
-    "vue-socket.io": "^2.1.1-b"
+    "vue-socket.io": "^2.1.1-b",
+    "vue2-datatable-component": "^2.2.2"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

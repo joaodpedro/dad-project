@@ -1,32 +1,41 @@
 <template>
   <div id="app">
         <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-            <router-link class="navbar-brand" to="/">BlackJack Game </router-link>
+            <a class="navbar-brand">BlackJack Game </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsMenu" aria-controls="navbarsMenu" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="navbarsMenu">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <router-link class="nav-link" to="/statistics">Statistics <span class="sr-only">(current)</span></router-link>
+                    <li class="nav-item">
+                        <router-link class="nav-link" to="/statistics-admin" v-if="loggedIn && this.$root.$data['loggedUser'].admin">Statistics</router-link>
+						<router-link class="nav-link" to="/statistics" v-else>Statistics</router-link>
                     </li>
-                    <li class="nav-item active">
+                    <li class="nav-item">
                         <router-link class="nav-link" to="/top5">Top 5</router-link>
                     </li>
                     <li class="nav-item">
                         <router-link class="nav-link" to="/games" v-if="loggedIn">Games</router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link class="nav-link" to="/profile" v-if="loggedIn">Profile</router-link>
+                        <router-link class="nav-link" to="/profile" v-if="loggedIn && !this.$root.$data['loggedUser'].admin">Profile</router-link>
                     </li>
-                    
+                    <li class="nav-item">
+                        <router-link class="nav-link" to="/users" v-if="loggedIn && this.$root.$data['loggedUser'].admin">Users</router-link>
+                    </li>
+                    <li class="nav-item">
+                        <router-link class="nav-link" to="/decks" v-if="loggedIn && this.$root.$data['loggedUser'].admin">Decks</router-link>
+                    </li>
+                    <li class="nav-item">
+                        <router-link class="nav-link" to="/configs" v-if="loggedIn && this.$root.$data['loggedUser'].admin">Platform Configuration</router-link>
+                    </li>
                 </ul>
                 <ul class="navbar-nav">
-                    <li class="navbar-brand"  v-if="loggedIn">
-                        {{this.$root.$data['loggedUser'].name}}
+					<li class="navbar-brand"  v-if="loggedIn">
+						{{this.$root.$data['loggedUser'].name}}
                     </li>
-                   <li class="nav-item mr-2" >
+                    <li class="nav-item mr-2" >
                         <router-link class="btn btn-primary" v-if="!loggedIn" to="/login">Login</router-link>
                     </li> 
 
