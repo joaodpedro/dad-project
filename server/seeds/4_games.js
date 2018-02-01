@@ -36,11 +36,11 @@ exports.seed = function(knex, Promise) {
                 {status: 'Finished', total_players: 2, created_by: 2, deck_used: 3, created_at: new Date('2018-01-30T00:15:30Z')},
                 {status: 'Finished', total_players: 3, created_by: 4, deck_used: 3, created_at: new Date('2018-01-30T00:15:30Z')},
                 {status: 'Finished', total_players: 2, created_by: 5, deck_used: 3, created_at: new Date('2018-01-31T00:15:30Z')},
-                {status: 'Pending', total_players: 1, created_by: 1, deck_used: 1, created_at: Date.now()},
-                {status: 'Pending', total_players: 1, created_by: 2, deck_used: 1, created_at: Date.now()},
-                {status: 'Pending', total_players: 1, created_by: 3, deck_used: 3, created_at: Date.now()},
-                {status: 'Pending', total_players: 1, created_by: 4, deck_used: 1, created_at: Date.now()},
-                {status: 'Pending', total_players: 1, created_by: 5, deck_used: 3, created_at: Date.now()}
+                {status: 'Pending', total_players: 1, created_by: 1, deck_used: 1, created_at: new Date('2018-01-31T00:15:30Z')},
+                {status: 'Pending', total_players: 1, created_by: 2, deck_used: 1, created_at: new Date('2018-01-31T00:15:30Z')},
+                {status: 'Pending', total_players: 1, created_by: 3, deck_used: 3, created_at: new Date('2018-01-31T00:15:30Z')},
+                {status: 'Pending', total_players: 1, created_by: 4, deck_used: 1, created_at: new Date('2018-01-31T00:15:30Z')},
+                {status: 'Pending', total_players: 1, created_by: 5, deck_used: 3, created_at: new Date('2018-01-31T00:15:30Z')}
             ];
 
             for(let game of games){

@@ -265,14 +265,14 @@ class DbHelper{
       ================================================================================*/
     //NUMBER GAMES BY DAY && AVG BY DAY
     getTotalGamesDay(callback){
-        connection.execute('SELECT COUNT(*) AS count, COUNT(*)/COUNT(DISTINCT created_at) AS avg, created_at FROM `games` GROUP BY created_at WHERE status = "Finished";',
+        connection.execute('SELECT COUNT(*) AS count, COUNT(*)/COUNT(DISTINCT created_at) AS avg, created_at FROM `games` WHERE status = "Finished" GROUP BY created_at;',
         function(err, results, fields){
             callback(err, results[0]);
         });
     }
 
     getGamesByDay(callback){
-        connection.execute('SELECT COUNT(*) as countday, DATE_FORMAT(created_at,"%d/%m/%Y") AS day FROM `games` GROUP BY created_at WHERE status = "Finished";', 
+        connection.execute('SELECT COUNT(*) as countday, DATE_FORMAT(created_at,"%d/%m/%Y") AS day FROM `games` WHERE status = "Finished" GROUP BY created_at;', 
         function(err, results, fields){
             callback(err, results);
         });
@@ -304,7 +304,7 @@ class DbHelper{
 
     //TOP 5 MOST POINTS
     getTop5MostPoints(callback){
-        connection.execute('SELECT id, name, nickname, total_points FROM `users` WHERE id = 0 ORDER BY total_points DESC LIMIT 5;', 
+        connection.execute('SELECT id, name, nickname, total_points FROM `users` WHERE admin = 0 ORDER BY total_points DESC LIMIT 5;', 
         function(err, results, fields){
             callback(err, results);
         });
