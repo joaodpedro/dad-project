@@ -1,7 +1,7 @@
 <template>
   <div id="app">
         <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-            <span class="navbar-brand">BlackJack Game </span>
+            <span class="navbar-brand">Sueca Game </span>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsMenu" aria-controls="navbarsMenu" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>

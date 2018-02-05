@@ -19,7 +19,7 @@ import Lobby from './Lobby.vue';
 export default {
     data: function(){
         return {
-            title: 'BlackJack',
+            title: 'Sueca',
             lobbyGames: [],
             activeGames: [],
             socketId: "",
